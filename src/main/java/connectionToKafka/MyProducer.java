@@ -6,7 +6,11 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -20,7 +24,7 @@ public class MyProducer {
     private static final String datasetPath = "data/prj2_dataset.csv";
 
 
-    public static Producer<String, String> setProducerProperties() {
+    public static Producer<String, String> createProducer() {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Config.KAFKA_BROKERS);
         props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaProducer");
@@ -29,40 +33,107 @@ public class MyProducer {
         return new KafkaProducer<>(props);
     }
 
+    private static void PublishMessages2() throws IOException {
+
+        AtomicInteger count = new AtomicInteger(); //conto a che linea sto
+        List<String> csvTimestamps = new ArrayList<>();
+
+        //Putting it in a try catch  block to catch File read exceptions.
+        try {
+            //Setting up a Stream to our CSV File.
+            Stream<String> FileStream = Files.lines(Paths.get(datasetPath));
 
 
-    public static void readFromCsv(){
+            //Here we are going to read each line using Foreach loop on the FileStream object
+            FileStream.forEach(line -> {
+
+                System.out.println("------------------------START----------------------");
+                count.getAndIncrement();
+                System.out.println("count = " + count);
+
+
+                //System.out.println("line: " + line);
+                String[] fields = line.split(",");
+                String key = fields[0];
+                String[] value = Arrays.copyOfRange(fields, 1, fields.length);
+                String tsCurrent = value[6];
+                System.out.println("tsCurrent = " + tsCurrent);
+
+
+                System.out.println("line: " + line);
+                System.out.println("key: " + key);
+                System.out.println("value: " + Arrays.toString(value));
+
+                line = String.join(",", value);  //trasforma da String[] a String
+
+                //qui dovrei fare un metodo che ritarda l'invio delle tuple al broker in base
+                // alla differenza tra i timestamp di due msg consecutivi
+                if (count.get() > 1) {
+                    csvTimestamps.add(tsCurrent);
+                    simulateStream(tsCurrent, csvTimestamps, count.get());
+                }
+
+
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("lista csvTimeStamps: "+ csvTimestamps);
 
 
     }
 
     private static void PublishMessages() {
         //Defining a Producer Object with set Properties.
-        final Producer<String, String> myKafkaProducer = setProducerProperties();
+        final Producer<String, String> producer = createProducer();
 
         //Putting it in a try catch  block to catch File read exceptions.
         try {
             //Setting up a Stream to our CSV File.
             Stream<String> FileStream = Files.lines(Paths.get(datasetPath));
+            AtomicInteger count = new AtomicInteger(); //conto a che linea sto
+            List<String> csvTimestamps = new ArrayList<>();
+
             //Here we are going to read each line using Foreach loop on the FileStream object
             FileStream.forEach(line -> {
 
+                System.out.println("------------------------START----------------------");
+                count.getAndIncrement();
+                System.out.println("count = "+count);
+
+
                 //System.out.println("line: " + line);
                 String[] fields = line.split(",");
-                //System.out.println("id: " + fields[0]);
+                String key = fields[0];
+                String[] value = Arrays.copyOfRange(fields,1, fields.length);
+                String tsCurrent = value[6];
+                System.out.println("tsCurrent = "+tsCurrent);
 
 
+                System.out.println("line: " + line);
+                System.out.println("key: " + key);
+                System.out.println("value: " + Arrays.toString(value));
 
+                line = String.join(",",value);  //trasforma da String[] a String
 
-                //The topic the record will be appended to
-                //The key that will be included in the record
-                //The record contents
+                //qui dovrei fare un metodo che ritarda l'invio delle tuple al broker in base
+                // alla differenza tra i timestamp di due msg consecutivi
+                if (count.get()>1) {
+                    csvTimestamps.add(tsCurrent);
+                    String csvTimestamp = value[6];
+                    String csvTimestamp1 = "";
+                    String csvTimestamp2 = "";
+                    simulateStream(tsCurrent, csvTimestamps, count.get());
+                }
+
+                //invio dei messaggi
                 final ProducerRecord<String, String> CsvRecord = new ProducerRecord<String, String>(
-                        Config.TOPIC1, fields[0], line
+                        Config.TOPIC1, key, line
                 );
 
                 // Send a record and set a callback function with metadata passed as argument.
-                myKafkaProducer.send(CsvRecord, (metadata, exception) -> {
+                producer.send(CsvRecord, (metadata, exception) -> {
                     if(metadata != null){
                         //Printing successful writes.
                         System.out.println("CsvData: -> "+ CsvRecord.key()+" | "+ CsvRecord.value());
@@ -73,24 +144,34 @@ public class MyProducer {
                     }
                 });
 
-                // */
+                String tsLast = value[6];
+                System.out.println("tsLast = "+tsLast);
+                System.out.println("------------------------END----------------------");
             });
 
 
-            myKafkaProducer.close();
+            producer.close();
         } catch ( IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    //metodo che calcola tempo di ritardo dell'invio dei messaggi
+    private static void simulateStream(String tsCurrent, List<String> tsList, int i) {
+
+        String tsLast = tsList.get(i);
+
+        //converto da stringa a data i ts
+        //tempo di cui ritardare mettilo come var globale cosi la cambio x i test
 
 
     }
 
 
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args){
-
-        PublishMessages();
-
+        PublishMessages2();
 
     }
 }
