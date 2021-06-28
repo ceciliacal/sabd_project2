@@ -98,19 +98,23 @@ public class MyProducer {
 
                  */
 
+                if (sleepTime!=null){
+                    try {
+                        System.out.println("sleep time: "+sleepTime+" sec");
+                        //TimeUnit.SECONDS.sleep(sleepTime);
+                        TimeUnit.SECONDS.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 //invio dei messaggi
                 final ProducerRecord<String, String> CsvRecord = new ProducerRecord<String, String>(
                         Config.TOPIC1, key, line
                 );
 
                 // Send a record and set a callback function with metadata passed as argument.
-                if (sleepTime!=null){
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+
                 producer.send(CsvRecord, (metadata, exception) -> {
                     if(metadata != null){
                         //Printing successful writes.
@@ -233,30 +237,36 @@ public class MyProducer {
         for (SimpleDateFormat dateFormat: dateFormats) {
             try {
                 lastTsTime = dateFormat.parse(lastTs).getTime();
+                /*
                 System.out.println("lastTsTime = "+lastTsTime);
                 System.out.println("---PRIMA---  "+lastTsTime);
+                 */
                 break;
             } catch (ParseException ignored) { }
         }
         for (SimpleDateFormat dateFormat: dateFormats) {
             try {
+
                 currentTsTime = dateFormat.parse(currentTs).getTime();
+                /*
                 System.out.println("currentTsTime = "+currentTsTime);
                 System.out.println("---DOPO--- "+currentTsTime);
+                 */
 
                 break;
             } catch (ParseException ignored) { }
         }
 
         double diff = currentTsTime - lastTsTime;
-        System.out.println("sleep time: "+diff*Config.accTime);
-        long sleepTime = (long) (diff*Config.accTime);
+        Long sleepTimeMillis =  (long) (diff*Config.accTime);
+        //per una differenza di 2 min nei ts, dormo 2 sec
+        Long sleepTimeSec = TimeUnit.MILLISECONDS.toMinutes(sleepTimeMillis);
 
-        System.out.println("--- diff SIMULATE: "+ diff);
-        //System.out.println("--- currentTsTime SIMULATE: "+ currentTsTime);
-        //System.out.println("--- lastTsTime SIMULATE: "+ lastTsTime);
+        System.out.println("--- ritardo in MILLISEC: "+ sleepTimeMillis);
+        System.out.println("--- ritardo in SECONDI: "+ sleepTimeSec);
 
-        return sleepTime;
+
+        return sleepTimeSec;
 
     }
 
