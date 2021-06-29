@@ -13,6 +13,8 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import utils.Config;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -92,8 +94,16 @@ public class MyConsumer {
             }
 
             DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
-            System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getSpeed()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp() );
+            System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getSpeed()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+"\n");
 
+
+            /*
+            PrintStream out = new PrintStream(new FileOutputStream("output.txt", true));
+            System.setOut(out);
+            out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getSpeed()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+"\n");
+
+
+             */
             collector.collect(data);
 
 
@@ -103,7 +113,7 @@ public class MyConsumer {
         }).name("bho");
 
 
-        stream.print();
+        //stream.print();
         env.execute("ingestingData");
 
 
