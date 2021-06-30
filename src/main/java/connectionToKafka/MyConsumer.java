@@ -85,16 +85,9 @@ public class MyConsumer {
             public void flatMap(String line, Collector<DataEntity> collector) throws Exception {
 
             String[] values = line.split(",");
-            Date date = null;
-            for (SimpleDateFormat dateFormat: dateFormats) {
-                try {
-                    date = dateFormat.parse(values[7]);
-                    break;
-                } catch (ParseException ignored) { }
-            }
 
-            DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
-            System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getSpeed()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+"\n");
+            DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
+            System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+"\n");
 
 
             /*

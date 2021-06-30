@@ -1,15 +1,20 @@
 package utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static utils.Config.dateFormats;
+
 public class DataEntity {
 
     String shipId;
-    Integer shipType;
-    double speed;
+    Integer shipTypeInt;
+    String shipType;
+    //double speed;
     double lon;
     double lat;
     String timestamp;
@@ -17,19 +22,57 @@ public class DataEntity {
     Date tsDate;
 
 
-    public DataEntity(String shipId, Integer shipType, double speed, double lon, double lat, String timestamp){
+    public DataEntity(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
         this.shipId = shipId;
-        this.shipType = shipType;
-        this.speed = speed;
+        this.shipTypeInt = shipTypeInt;
+        //this.speed = speed;
         this.lon = lon;
         this.lat = lat;
         this.timestamp = timestamp;
 
         String cell = calculateCell(this.lat, this.lon);
         setCell(cell);
+
+        String resultShipType = assignShipType(this.shipTypeInt);
+        setShipType(resultShipType);
+
+        Date date = stringToDate(this.timestamp);
+        setTsDate(date);
         //this.cell = this.calculateCell(this.lat, this.lon);
 
 
+
+    }
+
+    public Date stringToDate(String myDate){
+
+        Date date = null;
+        for (SimpleDateFormat dateFormat: dateFormats) {
+            try {
+                date = dateFormat.parse(myDate);
+                break;
+            } catch (ParseException ignored) { }
+        }
+
+        return date;
+
+    }
+    public String assignShipType(int typeNum){
+
+        String type = "";
+
+        if (typeNum == 35){
+            return type = "army";
+        }
+        if (typeNum >= 60 && typeNum <= 69){
+            return type = "passenger transport";
+        }
+        if (typeNum >= 70 && typeNum <= 79){
+            return type = "cargo";
+        }
+        else{
+            return type = "others";
+        }
 
     }
 
@@ -141,6 +184,7 @@ public class DataEntity {
         this.shipId = shipId;
     }
 
+    /*
     public double getSpeed() {
         return speed;
     }
@@ -148,6 +192,8 @@ public class DataEntity {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
+
+     */
 
     public double getLon() {
         return lon;
@@ -181,13 +227,7 @@ public class DataEntity {
         this.cell = cell;
     }
 
-    public Integer getShipType() {
-        return shipType;
-    }
 
-    public void setShipType(Integer shipType) {
-        this.shipType = shipType;
-    }
 
     public Date getTsDate() {
         return tsDate;
@@ -195,5 +235,22 @@ public class DataEntity {
 
     public void setTsDate(Date tsDate) {
         this.tsDate = tsDate;
+    }
+
+
+    public Integer getShipTypeInt() {
+        return shipTypeInt;
+    }
+
+    public void setShipTypeInt(Integer shipTypeInt) {
+        this.shipTypeInt = shipTypeInt;
+    }
+
+    public String getShipType() {
+        return shipType;
+    }
+
+    public void setShipType(String shipType) {
+        this.shipType = shipType;
     }
 }
