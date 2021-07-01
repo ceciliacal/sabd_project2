@@ -20,6 +20,7 @@ public class DataEntity {
     String timestamp;
     String cell;
     Date tsDate;
+    String sea;
 
 
     public DataEntity(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
@@ -40,6 +41,9 @@ public class DataEntity {
         setTsDate(date);
         //this.cell = this.calculateCell(this.lat, this.lon);
 
+        String sea = assignSea(this.lat, this.lon);
+        setSea(sea);
+
 
 
     }
@@ -57,6 +61,28 @@ public class DataEntity {
         return date;
 
     }
+
+    public String assignSea(double lat, double lon){
+
+        double latSicilyChannel = 35.586;
+        double lonSicilyChannel = 12.969;
+
+        String sea = "";
+
+        //orientale
+        if (lat<latSicilyChannel && lon>lonSicilyChannel){
+            sea = "mediterraneoOrientale";
+
+        }
+        else{
+            sea = "mediterraneoOccidentale";
+        }
+
+        return sea;
+
+
+
+    }
     public String assignShipType(int typeNum){
 
         String type = "";
@@ -68,7 +94,7 @@ public class DataEntity {
             return type = "passenger transport";
         }
         if (typeNum >= 70 && typeNum <= 79){
-            return type = "cargo";
+            return type = "passenger transport";
         }
         else{
             return type = "others";
@@ -252,5 +278,13 @@ public class DataEntity {
 
     public void setShipType(String shipType) {
         this.shipType = shipType;
+    }
+
+    public String getSea() {
+        return sea;
+    }
+
+    public void setSea(String sea) {
+        this.sea = sea;
     }
 }

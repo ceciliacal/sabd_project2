@@ -11,6 +11,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import query1.Query1;
 import utils.Config;
 
 import java.io.FileOutputStream;
@@ -34,7 +35,8 @@ public class MyConsumer {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
         StreamExecutionEnvironment env = createEnviroment(consumer);
-        dataPrep(env, consumer);
+        DataStream<DataEntity> stream = dataPrep(env, consumer);
+        Query1.runQuery1(stream);
 
 
     }
@@ -73,45 +75,41 @@ public class MyConsumer {
     }
 
 
-        
-    public static void dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
 
-        System.out.println(" data prep: ");
+        
+    public static DataStream<DataEntity> dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
+
+        //nelle funzioni di flink, nei <> si mette il tipo dei dati sia dei param di input che del tipo di ritorno
+        // String qui è parametro di input e Collector<DataEntity> è il tipo di ritorno
+        //e poi nell'override si specifica params e tipo nel modo classico, riprendendoli da quelli riportati in <>
+
+        //to process data simultaneously on multiple concurrent instances, group the data through the key by operation
+        //con keyed stream gli operatori sono stateful ??
 
         DataStream<DataEntity> stream = env.addSource(consumer).
-        flatMap(new FlatMapFunction<String, DataEntity> () {
+                flatMap(new FlatMapFunction<String, DataEntity> () {
 
-            @Override
-            public void flatMap(String line, Collector<DataEntity> collector) throws Exception {
+                    @Override
+                    public void flatMap(String line, Collector<DataEntity> collector) throws Exception {
 
-            String[] values = line.split(",");
+                        String[] values = line.split(",");
 
-            DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
-            System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+"\n");
+                        DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
+                        System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+", "+data.getSea()+"\n");
 
-
-            /*
-            PrintStream out = new PrintStream(new FileOutputStream("output.txt", true));
-            System.setOut(out);
-            out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getSpeed()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+"\n");
+                        collector.collect(data);
 
 
-             */
-            collector.collect(data);
+                    };
 
 
-        };
-
-
-        }).name("bho");
+                }).name("dataEntity_stream");
 
 
         //stream.print();
         env.execute("ingestingData");
 
 
-
-
-        return;
+        return stream;
     }
 }
