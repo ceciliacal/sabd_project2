@@ -1,23 +1,27 @@
 package query1;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OutputQuery1 {
 
+    private Map<String, Double> countType;
     private String cellId;
-    private
-    Date date;
+    private Date date;
 
     @Override
     public String toString() {
-        return "Query1Outcome{" +
-                "cellId='" + cellId + '\'' +
+        return "OutputQuery1{" +
+                "countType=" + countType +
+                ", cellId='" + cellId + '\'' +
                 ", date=" + date +
                 '}';
     }
 
-    public OutputQuery1(String cellId) {
-        this.cellId = cellId;
+    public OutputQuery1(Map<String, Double> countType) {
+        this.countType = countType;
+        //this.countType = countType.get(countType.keySet());
     }
 
     public String getCellId() {

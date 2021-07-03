@@ -40,40 +40,14 @@ public class Query1 {
 
         stream.filter(line -> line.getSea().equals("mediterraneoOccidentale"))
                 .assignTimestampsAndWatermarks(strategy)
-                //.assignTimestampsAndWatermarks(WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofDays(1)).withTimestampAssigner((dataEntity, l) -> dataEntity.getTsDate().getTime()))
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.hours(1)))
-                //.window(new TumblingEventTimeWindows<DataEntity, String, TimeWindow>()
-                .aggregate(new AggregateFunction<DataEntity, AccumulatorQuery1, OutputQuery1>() {
-                               @Override
-                               public AccumulatorQuery1 createAccumulator() {
-                                   return new AccumulatorQuery1();
-                               }
+                .window(TumblingEventTimeWindows.of(Time.days(7)))
+                //.process( new MyProcessWindowFunction())
+
+                .aggregate(new AverageAggregate(), new ProcessWindowFunction<OutputQuery1, OutputQuery1, String, TimeWindow>() {
 
                                @Override
-                               public AccumulatorQuery1 add(DataEntity dataEntity, AccumulatorQuery1 accumulatorQuery1) {
-                                   System.out.println("==dataentity: "+dataEntity);
-                                   System.out.println("---add");
-                                   Tuple2<String, Double> t = new Tuple2<>(dataEntity.getShipType(), 0.0);
-                                   accumulatorQuery1.setTupla(t);
-                                   return accumulatorQuery1;
-                               }
-
-                               @Override
-                               public OutputQuery1 getResult(AccumulatorQuery1 accumulatorQuery1) {
-                                   System.out.println("---result");
-                                   return new OutputQuery1(accumulatorQuery1.getTupla().f0);
-                               }
-
-                               @Override
-                               public AccumulatorQuery1 merge(AccumulatorQuery1 accumulatorQuery1, AccumulatorQuery1 acc1) {
-                                   System.out.println("---merge");
-                                   return accumulatorQuery1;
-                               }
-                           }, new ProcessWindowFunction<OutputQuery1, OutputQuery1, String, TimeWindow>() {
-
-                               @Override
-                               public void process(String s, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> collector) throws Exception {
+                               public void process(String key, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> collector) throws Exception {
                                    OutputQuery1 res = iterable.iterator().next();
                                    Date date = new Date();
                                    date.setTime(context.window().getStart());
@@ -81,9 +55,13 @@ public class Query1 {
                                    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                                    res.setDate(date);
+                                   res.setCellId(key);
                                    System.out.println("---res: " + res);
                                }
-                           }).print();
+                           })
+
+
+                .print();
 
 
 
