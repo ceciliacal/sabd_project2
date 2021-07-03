@@ -14,18 +14,9 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import query1.Query1;
 import utils.Config;
 
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import utils.DataEntity;
-
-import static utils.Config.dateFormats;
 
 
 public class MyConsumer {
@@ -34,9 +25,12 @@ public class MyConsumer {
     public static void main(String[] args) throws Exception {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
+        WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
         StreamExecutionEnvironment env = createEnviroment(consumer);
-        DataStream<DataEntity> stream = dataPrep(env, consumer);
-        Query1.runQuery1(stream);
+        //DataStream<DataEntity> stream = dataPrep(env, consumer);
+        Query1.runQuery1(strategy, env, consumer);
+        //env.execute();
+
 
 
     }
@@ -56,13 +50,26 @@ public class MyConsumer {
         System.out.println("consumer working");
 
         FlinkKafkaConsumer<String> myConsumer = new FlinkKafkaConsumer<>(Config.TOPIC1, new SimpleStringSchema(), props);
-        myConsumer.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(1)));
+        //myConsumer.WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+
+        WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+        //myConsumer.assignTimestampsAndWatermarks(strategy);
 
 
         return myConsumer;
 
         //ora devo fare funzione per query1 che che come input riceve il DataStream però prima devo settare setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
 
+        /*
+
+        .process(new KeyedProcessFunction<String, DataEntity, DataEntity>() {
+                    @Override
+                    public void processElement(DataEntity dataEntity, Context context, Collector<DataEntity> collector) throws Exception {
+                        System.out.println("dopo trasformazioni: "+dataEntity.getShipId()+", "+dataEntity.getShipType()+", "+dataEntity.getSea()+", "+dataEntity.getCell());
+                    }
+                });
+
+         */
 
     }
 
@@ -107,7 +114,7 @@ public class MyConsumer {
 
 
         //stream.print();
-        env.execute("ingestingData");
+        //env.execute("ingestingData");
 
 
         return stream;

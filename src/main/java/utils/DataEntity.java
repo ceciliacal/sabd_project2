@@ -9,6 +9,7 @@ import java.util.List;
 
 import static utils.Config.dateFormats;
 
+
 public class DataEntity {
 
     String shipId;
@@ -88,16 +89,16 @@ public class DataEntity {
         String type = "";
 
         if (typeNum == 35){
-            return type = "army";
+            return type = Config.ARMY_TYPE;
         }
         if (typeNum >= 60 && typeNum <= 69){
-            return type = "passenger transport";
+            return type = Config.PASSENGERS_TYPE;
         }
         if (typeNum >= 70 && typeNum <= 79){
-            return type = "passenger transport";
+            return type = Config.CARGO_TYPE;
         }
         else{
-            return type = "others";
+            return type = Config.OTHERS_TYPE;
         }
 
     }
@@ -154,7 +155,7 @@ public class DataEntity {
             String indexLonStr = String.valueOf(indexLon);
 
             cell = latLetter.concat(indexLonStr);
-            System.out.println("-- CELLA= "+cell);
+            //System.out.println("-- CELLA= "+cell);
             return cell;
         }
 
@@ -208,6 +209,21 @@ public class DataEntity {
 
     public void setShipId(String shipId) {
         this.shipId = shipId;
+    }
+
+    @Override
+    public String toString() {
+        return "DataEntity{" +
+                "shipId='" + shipId + '\'' +
+                ", shipTypeInt=" + shipTypeInt +
+                ", shipType='" + shipType + '\'' +
+                ", lon=" + lon +
+                ", lat=" + lat +
+                ", timestamp='" + timestamp + '\'' +
+                ", cell='" + cell + '\'' +
+                ", tsDate=" + tsDate +
+                ", sea='" + sea + '\'' +
+                '}';
     }
 
     /*
