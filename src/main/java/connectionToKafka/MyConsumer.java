@@ -25,7 +25,7 @@ public class MyConsumer {
     public static void main(String[] args) throws Exception {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
-        WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+        WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofHours(1)).withIdleness(Duration.ofHours(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
         StreamExecutionEnvironment env = createEnviroment(consumer);
         //DataStream<DataEntity> stream = dataPrep(env, consumer);
         Query1.runQuery1(strategy, env, consumer);

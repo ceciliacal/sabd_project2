@@ -1,9 +1,7 @@
 package query1;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.AggregateFunction;
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
@@ -23,27 +21,17 @@ public class Query1 {
 
     public static void runQuery1(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, FlinkKafkaConsumer consumer) throws Exception {
 
+
         DataStream<DataEntity> stream = env.addSource(consumer).
-                flatMap(new FlatMapFunction<String, DataEntity> () {
-
-                    @Override
-                    public void flatMap(String line, Collector<DataEntity> collector) {
-                        String[] values = line.split(",");
-
-                        DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
-                        //System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+", "+data.getSea()+"\n");
-                        collector.collect(data);
-
-                    };
-
-                }).returns(DataEntity.class);
+                map(new MyMapFunction())
+                .returns(DataEntity.class)
+                ;
 
         stream.filter(line -> line.getSea().equals("mediterraneoOccidentale"))
                 .assignTimestampsAndWatermarks(strategy)
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.days(7)))
+                .window(TumblingEventTimeWindows.of(Time.days(2)))
                 //.process( new MyProcessWindowFunction())
-
                 .aggregate(new AverageAggregate(), new ProcessWindowFunction<OutputQuery1, OutputQuery1, String, TimeWindow>() {
 
                                @Override
@@ -56,11 +44,17 @@ public class Query1 {
 
                                    res.setDate(date);
                                    res.setCellId(key);
+                                   //collector.collect(res);
                                    System.out.println("---res: " + res);
                                }
-                           })
+                }).map(new MapFunction<OutputQuery1, OutputQuery1>() {
 
-
+                            @Override
+                            public OutputQuery1 map(OutputQuery1 outputQuery1) throws Exception {
+                                System.out.println("set: "+outputQuery1.getCountType().entrySet());
+                                return null;
+                            }
+                })
                 .print();
 
 
