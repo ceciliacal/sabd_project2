@@ -10,6 +10,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
+import utils.Config;
 import utils.DataEntity;
 
 import java.text.SimpleDateFormat;
@@ -22,20 +23,22 @@ public class Query1 {
     public static void runQuery1(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, FlinkKafkaConsumer consumer) throws Exception {
 
 
-        DataStream<DataEntity> stream = env.addSource(consumer).
-                map(new MyMapFunction())
+        DataStream<DataEntity> stream = env.addSource(consumer)
+                .map(new MyMapFunction())
                 .returns(DataEntity.class)
                 ;
 
-        stream.filter(line -> line.getSea().equals("mediterraneoOccidentale"))
+        stream
+                .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
                 .assignTimestampsAndWatermarks(strategy)
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.days(2)))
+                .window(TumblingEventTimeWindows.of(Time.minutes(3)))
                 //.process( new MyProcessWindowFunction())
-                .aggregate(new AverageAggregate(), new ProcessWindowFunction<OutputQuery1, OutputQuery1, String, TimeWindow>() {
+                .aggregate( new AverageAggregate(),
+                            new ProcessWindowFunction<OutputQuery1, OutputQuery1, String, TimeWindow>() {
 
                                @Override
-                               public void process(String key, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> collector) throws Exception {
+                               public void process(String key, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> out) throws Exception {
                                    OutputQuery1 res = iterable.iterator().next();
                                    Date date = new Date();
                                    date.setTime(context.window().getStart());
@@ -44,22 +47,30 @@ public class Query1 {
 
                                    res.setDate(date);
                                    res.setCellId(key);
-                                   //collector.collect(res);
+                                   out.collect(res);
                                    System.out.println("---res: " + res);
                                }
-                }).map(new MapFunction<OutputQuery1, OutputQuery1>() {
 
-                            @Override
-                            public OutputQuery1 map(OutputQuery1 outputQuery1) throws Exception {
-                                System.out.println("set: "+outputQuery1.getCountType().entrySet());
-                                return null;
-                            }
                 })
+                .name("query1")
+
+                .map((MapFunction<OutputQuery1, String>) myOutput -> {
+                    // stampo il ts
+                    System.out.println("ts: "+myOutput.getDate());
+                    System.out.println("ts: "+myOutput.getDate());
+
+                    System.out.println("-----CACCCAAAAAAAAAA---");
+                    System.out.println("-----CACCCAAAAAAAAAA---");
+                    System.out.println("set: "+myOutput.getCountType().entrySet());
+                    return "ciao";
+                })
+
+
                 .print();
 
 
 
-                        env.execute("aiuto");
+        env.execute("aiuto");
 
                 /*
                 .flatMap(new FlatMapFunction<DataEntity, Object>() {

@@ -3,6 +3,9 @@ package connectionToKafka;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +25,7 @@ import utils.Config;
 public class MyProducer {
     //devo mettere topic e le properties per il kafka client (bootstrap servers)
 
-    private static final String datasetPath = "data/prj2_dataset.csv";
+    //private static final String datasetPath = "data/prj2_dataset.csv";
     private static final SimpleDateFormat[] dateFormats = {new SimpleDateFormat("dd/MM/yy HH:mm"), new SimpleDateFormat("dd-MM-yy HH:mm")};
 
 
@@ -35,19 +38,24 @@ public class MyProducer {
         return new KafkaProducer<>(props);
     }
 
-    private static void PublishMessages2() throws IOException {
+
+
+    public static void PublishMessages2() throws IOException {
 
         AtomicInteger count = new AtomicInteger(); //conto a che linea sto
         List<String> csvTimestamps = new ArrayList<>();
+        List<Date> dateList = new ArrayList<>();
+        String reader = "";
 
         final Producer<String, String> producer = createProducer();
 
         //Putting it in a try catch  block to catch File read exceptions.
         try {
             //Setting up a Stream to our CSV File.
-            Stream<String> FileStream = Files.lines(Paths.get(datasetPath));
+            Stream<String> FileStream = Files.lines(Paths.get(Config.datasetPath));
 
             //Read each line using Foreach loop on the FileStream object and remove header
+
             FileStream.skip(1).forEach(line -> {
 
                 Long sleepTime = null;
@@ -65,16 +73,26 @@ public class MyProducer {
                 String tsCurrent = value[6];
 
                 System.out.println("tsCurrent = " + tsCurrent);
-                Date cacca = null;
+                Date date = null;
                 for (SimpleDateFormat dateFormat: dateFormats) {
                     try {
-                        cacca = dateFormat.parse(tsCurrent);
+                        date = dateFormat.parse(tsCurrent);
 
-                        System.out.println("---cacca---  "+cacca);
+                        //System.out.println("---cacca---  "+date);
 
                         break;
                     } catch (ParseException ignored) { }
                 }
+
+
+                dateList.add(date);
+                Collections.sort(dateList, new Comparator<Date>() {
+                    @Override
+                    public int compare(Date d1, Date d2) {
+                        return d1.compareTo(d2);
+                    }
+                });
+
 
                 //System.out.println("csvTimestamps = "+csvTimestamps);
 
@@ -121,7 +139,7 @@ public class MyProducer {
                 }
 
                 //invio dei messaggi
-                final ProducerRecord<String, String> CsvRecord = new ProducerRecord<String, String>(
+                final ProducerRecord<String, String> CsvRecord = new ProducerRecord<>(
                         Config.TOPIC1, key, line
                 );
 

@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class AccumulatorQuery1 implements Serializable {
 
+    //ship type, list of ship IDs
     private Map<String, List<String>> countType;
 
     public void setCountType(Map<String, List<String>> countType) {
@@ -17,23 +18,24 @@ public class AccumulatorQuery1 implements Serializable {
     }
 
     public AccumulatorQuery1() {
+
         this.countType = new HashMap<>();
     }
 
 
     public void add(String type, String id){
 
-        List<String> idList = countType.get(type);
-        System.out.println("In Accumulator: --idList= "+idList);
-        if (idList == null){
-            idList = new ArrayList<>();
-            idList.add(id);
-            countType.put(type, idList);
+        List<String> listOfShips = countType.get(type);
+        System.out.println("In Accumulator: --listOfShips= "+listOfShips);
+        if (listOfShips == null){
+            listOfShips = new ArrayList<>();
+            listOfShips.add(id);
+            countType.put(type, listOfShips);
         }
         else{
-            if (!idList.contains(id)){
-                idList.add(id);
-                countType.put(type, idList);
+            if (!listOfShips.contains(id)){
+                listOfShips.add(id);
+                countType.put(type, listOfShips);
             }
 
         }

@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class OutputQuery1 {
 
-    private Map<String, Integer> countType;
-    private String cellId;
     private Date date;
+    private String cellId;
+    private Map<String, Integer> countType;
 
 
     @Override
