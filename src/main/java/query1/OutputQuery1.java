@@ -1,9 +1,9 @@
 package query1;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import utils.Config;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class OutputQuery1 {
 
@@ -54,4 +54,26 @@ public class OutputQuery1 {
     public void setDate(Date date) {
         this.date = date;
     }
+
+
+    public static String writeQuery1Result(OutputQuery1 myOutput){
+
+        StringBuilder sb = new StringBuilder();
+        Date timestamp = myOutput.getDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
+        int numDays = Config.TIME_DAYS_7;
+
+        sb.append(simpleDateFormat.format(timestamp));
+        sb.append(",");
+        sb.append(myOutput.getCellId());
+        sb.append(",");
+
+        myOutput.getCountType().forEach((k,v) -> {
+            sb.append(k).append(",").append(String.format(Locale.ENGLISH, "%.2g", (double)v/numDays));
+        });
+
+        return sb.toString();
+
+    }
+
 }

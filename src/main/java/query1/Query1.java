@@ -15,6 +15,7 @@ import utils.DataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class Query1 {
@@ -55,14 +56,18 @@ public class Query1 {
                 .name("query1")
 
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {
-                    // stampo il ts
-                    System.out.println("ts: "+myOutput.getDate());
-                    System.out.println("ts: "+myOutput.getDate());
 
-                    System.out.println("-----CACCCAAAAAAAAAA---");
-                    System.out.println("-----CACCCAAAAAAAAAA---");
+                    // stampo il ts
+                    System.out.println("-----------------------");
+                    System.out.println("ts: "+myOutput.getDate());
+                    System.out.println("cell: "+myOutput.getCellId());
                     System.out.println("set: "+myOutput.getCountType().entrySet());
-                    return "ciao";
+
+                    return OutputQuery1.writeQuery1Result(myOutput);
+
+                    //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
+                    //System.out.println("-----CACCCAAAAAAAAAA---");
+                    //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
 
 
