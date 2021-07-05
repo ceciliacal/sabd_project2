@@ -31,7 +31,7 @@ public class MyConsumer {
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
         StreamExecutionEnvironment env = createEnviroment(consumer);
         //DataStream<DataEntity> stream = dataPrep(env, consumer);
-        Query1.runQuery1(strategy, env, consumer);
+        //Query1.runQuery1(strategy, env, consumer);
         Query2.runQuery2(strategy, env, consumer);
         //env.execute();
 

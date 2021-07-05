@@ -17,7 +17,7 @@ public class AccumulatorQuery2 {
     }
 
     public void addAM(String cell, String shipId) {
-
+        System.out.println("---add AM");
         List<String> listOfShips = am.get(cell);
         System.out.println("In Accumulator : --listOfShips AM= "+listOfShips);
         if (listOfShips==null){
@@ -34,7 +34,7 @@ public class AccumulatorQuery2 {
     }
 
     public void addPM(String cell, String shipId) {
-
+        System.out.println("---add PM");
         List<String> listOfShips = pm.get(cell);
         System.out.println("In Accumulator : --listOfShips PM= "+listOfShips);
         if (listOfShips==null){

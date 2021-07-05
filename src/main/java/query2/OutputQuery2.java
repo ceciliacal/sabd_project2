@@ -20,6 +20,9 @@ public class OutputQuery2 {
     public void calculateAmRank(Map<String, List<String>> am){
 
         Map<Integer, String> swappedKeyValue = new HashMap<>();
+        System.out.println("--calculate in OUTPUTQUERY2 --- amRank: "+this.amRank);
+        this.amRank = new HashMap<>();
+        System.out.println("--calculate in OUTPUTQUERY2 --- amRank AFTER: "+this.amRank);
         int count = 0;
         int max = 2;
 
@@ -34,7 +37,7 @@ public class OutputQuery2 {
         Map<Integer,String> sortedCells = new TreeMap<>(Collections.reverseOrder());
         sortedCells.putAll(swappedKeyValue);
 
-        System.out.println("sortedCells COMPLETA di AM: "+sortedCells);
+        System.out.println("OUTPUTQUERY2: sortedCells COMPLETA di AM: "+sortedCells);
 
         //prendo primi tre elementi da sortedCells
         for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
@@ -48,6 +51,10 @@ public class OutputQuery2 {
     public void calculatePmRank(Map<String, List<String>> pm){
 
         Map<Integer, String> swappedKeyValue = new HashMap<>();
+        System.out.println("--calculate in OUTPUTQUERY2 --- pmRank: "+this.pmRank);
+        this.pmRank = new HashMap<>();
+        System.out.println("--calculate in OUTPUTQUERY2 --- pmRank AFTER: "+this.pmRank);
+
         int count = 0;
         int max = 2;
 
@@ -62,7 +69,7 @@ public class OutputQuery2 {
         Map<Integer,String> sortedCells = new TreeMap<>(Collections.reverseOrder());
         sortedCells.putAll(swappedKeyValue);
 
-        System.out.println("sortedCells COMPLETA di AM: "+sortedCells);
+        System.out.println("OUTPUTQUERY2: sortedCells COMPLETA di PM: "+sortedCells);
 
         //prendo primi tre elementi da sortedCells
         for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
