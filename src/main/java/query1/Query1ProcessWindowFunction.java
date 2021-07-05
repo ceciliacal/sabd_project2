@@ -3,8 +3,6 @@ package query1;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
-import utils.Config;
-import utils.DataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

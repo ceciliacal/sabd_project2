@@ -1,16 +1,16 @@
 package query2;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import utils.DataEntity;
+import utils.Ship;
 
-public class RankAggregate implements AggregateFunction<DataEntity, AccumulatorQuery2, OutputQuery2> {
+public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2, OutputQuery2> {
     @Override
     public AccumulatorQuery2 createAccumulator() {
         return new AccumulatorQuery2();
     }
 
     @Override
-    public AccumulatorQuery2 add(DataEntity data, AccumulatorQuery2 acc) {
+    public AccumulatorQuery2 add(Ship data, AccumulatorQuery2 acc) {
         System.out.println("==dataentity: " + data);
         System.out.println("---add");
 

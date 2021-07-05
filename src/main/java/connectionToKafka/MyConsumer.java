@@ -17,7 +17,7 @@ import utils.Config;
 
 import java.time.Duration;
 import java.util.Properties;
-import utils.DataEntity;
+import utils.Ship;
 
 
 public class MyConsumer {
@@ -26,14 +26,14 @@ public class MyConsumer {
     public static void main(String[] args) throws Exception {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
-        WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1))
+        WatermarkStrategy<Ship> strategy = WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
                                                 .withIdleness(Duration.ofMinutes(1))
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
         StreamExecutionEnvironment env = createEnviroment(consumer);
 
-        DataStream<DataEntity> stream = env.addSource(consumer)
+        DataStream<Ship> stream = env.addSource(consumer)
                 .map(new MyMapFunction())
-                .returns(DataEntity.class);
+                .returns(Ship.class);
 
         //Query1.runQuery1(strategy, env, stream);
         Query2.runQuery2(strategy, env, stream);
@@ -65,17 +65,17 @@ public class MyConsumer {
     }
 
         
-    public static DataStream<DataEntity> dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
+    public static DataStream<Ship> dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
 
-        DataStream<DataEntity> stream = env.addSource(consumer).
-                flatMap(new FlatMapFunction<String, DataEntity> () {
+        DataStream<Ship> stream = env.addSource(consumer).
+                flatMap(new FlatMapFunction<String, Ship> () {
 
                     @Override
-                    public void flatMap(String line, Collector<DataEntity> collector) throws Exception {
+                    public void flatMap(String line, Collector<Ship> collector) throws Exception {
 
                         String[] values = line.split(",");
 
-                        DataEntity data = new DataEntity(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
+                        Ship data = new Ship(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
                         System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+", "+data.getSea()+"\n");
 
                         collector.collect(data);

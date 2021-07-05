@@ -9,7 +9,7 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import utils.Config;
-import utils.DataEntity;
+import utils.Ship;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import java.util.*;
 
 public class Query2 {
 
-    public static void runQuery2(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, DataStream<DataEntity> stream) throws Exception {
+    public static void runQuery2(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         stream
                 .assignTimestampsAndWatermarks(strategy)
@@ -31,8 +31,8 @@ public class Query2 {
                     //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
-                .addSink(new FlinkKafkaProducer<String>(Config.TOPIC_Q1,
-                        new utils.ProducerStringSerializationSchema(Config.TOPIC_Q1),
+                .addSink(new FlinkKafkaProducer<String>("QUERY2",
+                        new utils.ProducerStringSerializationSchema("QUERY2"),
                         MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
                 .name("query2Result");

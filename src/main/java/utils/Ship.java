@@ -10,7 +10,7 @@ import java.util.List;
 import static utils.Config.dateFormats;
 
 
-public class DataEntity {
+public class Ship {
 
     String shipId;
     Integer shipTypeInt;
@@ -24,7 +24,7 @@ public class DataEntity {
     String sea;
 
 
-    public DataEntity(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
+    public Ship(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
         this.shipId = shipId;
         this.shipTypeInt = shipTypeInt;
         this.lon = lon;

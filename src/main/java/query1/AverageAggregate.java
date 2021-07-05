@@ -1,10 +1,10 @@
 package query1;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import utils.DataEntity;
+import utils.Ship;
 import java.util.*;
 
-public class AverageAggregate implements AggregateFunction<DataEntity, AccumulatorQuery1, OutputQuery1> {
+public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuery1, OutputQuery1> {
 
 
     @Override
@@ -14,7 +14,7 @@ public class AverageAggregate implements AggregateFunction<DataEntity, Accumulat
     }
 
     @Override
-    public AccumulatorQuery1 add(DataEntity data, AccumulatorQuery1 acc) {
+    public AccumulatorQuery1 add(Ship data, AccumulatorQuery1 acc) {
         System.out.println("==dataentity: "+data);
         System.out.println("---add");
 

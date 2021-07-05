@@ -8,17 +8,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import utils.Config;
-import utils.DataEntity;
-import java.util.Properties;
+import utils.Ship;
 
 public class Query1 {
 
 
-    public static void runQuery1(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, DataStream<DataEntity> stream) throws Exception {
+    public static void runQuery1(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
