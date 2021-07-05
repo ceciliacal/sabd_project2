@@ -12,6 +12,7 @@ import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import query1.Query1;
+import query2.Query2;
 import utils.Config;
 
 import java.time.Duration;
@@ -31,6 +32,7 @@ public class MyConsumer {
         StreamExecutionEnvironment env = createEnviroment(consumer);
         //DataStream<DataEntity> stream = dataPrep(env, consumer);
         Query1.runQuery1(strategy, env, consumer);
+        Query2.runQuery2(strategy, env, consumer);
         //env.execute();
 
 

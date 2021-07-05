@@ -1,7 +1,5 @@
 package query1;
 
-import org.apache.flink.api.java.tuple.Tuple2;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,45 +9,45 @@ import java.util.Map;
 public class AccumulatorQuery1 implements Serializable {
 
     //ship type, list of ship IDs
-    private Map<String, List<String>> countType;
+    private Map<String, List<String>> countShipType;
 
     public AccumulatorQuery1() {
 
-        this.countType = new HashMap<>();
+        this.countShipType = new HashMap<>();
     }
 
 
     public void add(String type, String id){
 
-        List<String> listOfShips = countType.get(type);
+        List<String> listOfShips = countShipType.get(type);
         System.out.println("In Accumulator: --listOfShips= "+listOfShips);
         if (listOfShips == null){
             listOfShips = new ArrayList<>();
             listOfShips.add(id);
-            countType.put(type, listOfShips);
+            countShipType.put(type, listOfShips);
         }
         else{
             if (!listOfShips.contains(id)){
                 listOfShips.add(id);
-                countType.put(type, listOfShips);
+                countShipType.put(type, listOfShips);
             }
 
         }
 
     }
 
-    public Map<String, List<String>> getCountType() {
-        return countType;
+    public Map<String, List<String>> getCountShipType() {
+        return countShipType;
     }
 
-    public void setCountType(Map<String, List<String>> countType) {
-        this.countType = countType;
+    public void setCountShipType(Map<String, List<String>> countShipType) {
+        this.countShipType = countShipType;
     }
 
     @Override
     public String toString() {
         return "AccumulatorQuery1{" +
-                "countType=" + countType +
+                "countType=" + countShipType +
                 '}';
     }
 
