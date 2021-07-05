@@ -15,10 +15,10 @@ public class DataEntity {
     String shipId;
     Integer shipTypeInt;
     String shipType;
-    //double speed;
     double lon;
     double lat;
     String timestamp;
+    String tripDay;
     String cell;
     Date tsDate;
     String sea;
@@ -27,7 +27,6 @@ public class DataEntity {
     public DataEntity(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
         this.shipId = shipId;
         this.shipTypeInt = shipTypeInt;
-        //this.speed = speed;
         this.lon = lon;
         this.lat = lat;
         this.timestamp = timestamp;
@@ -40,12 +39,20 @@ public class DataEntity {
 
         Date date = stringToDate(this.timestamp);
         setTsDate(date);
-        //this.cell = this.calculateCell(this.lat, this.lon);
 
         String sea = assignSea(this.lat, this.lon);
         setSea(sea);
 
+        String tripDay = retrieveDayFromTs(this.timestamp);
+        setTripDay(tripDay);
 
+    }
+
+    public String retrieveDayFromTs(String ts){
+
+        String[] tokens = ts.split(" ");
+        String day = tokens[0];
+        return day;
 
     }
 
@@ -226,16 +233,6 @@ public class DataEntity {
                 '}';
     }
 
-    /*
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-     */
 
     public double getLon() {
         return lon;
@@ -279,6 +276,13 @@ public class DataEntity {
         this.tsDate = tsDate;
     }
 
+    public String getTripDay() {
+        return tripDay;
+    }
+
+    public void setTripDay(String tripDay) {
+        this.tripDay = tripDay;
+    }
 
     public Integer getShipTypeInt() {
         return shipTypeInt;

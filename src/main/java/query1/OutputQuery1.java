@@ -66,10 +66,10 @@ public class OutputQuery1 {
         sb.append(simpleDateFormat.format(timestamp));
         sb.append(",");
         sb.append(myOutput.getCellId());
-        sb.append(",");
+
 
         myOutput.getCountType().forEach((k,v) -> {
-            sb.append(k).append(",").append(String.format(Locale.ENGLISH, "%.2g", (double)v/numDays));
+            sb.append(",");sb.append(k).append(",").append(String.format(Locale.ENGLISH, "%.2g", (double)v/numDays));
         });
 
         return sb.toString();

@@ -13,10 +13,6 @@ public class AccumulatorQuery1 implements Serializable {
     //ship type, list of ship IDs
     private Map<String, List<String>> countType;
 
-    public void setCountType(Map<String, List<String>> countType) {
-        this.countType = countType;
-    }
-
     public AccumulatorQuery1() {
 
         this.countType = new HashMap<>();
@@ -42,27 +38,13 @@ public class AccumulatorQuery1 implements Serializable {
 
     }
 
-    /*
-    public void add (String shipType){
-
-        Double counted = countType.get(shipType);
-        if (counted==null){
-            counted = 0.0;
-
-        }
-        countType.put(shipType,counted+1.0);
-
-    }
-
-     */
-
-
     public Map<String, List<String>> getCountType() {
         return countType;
     }
 
-
-
+    public void setCountType(Map<String, List<String>> countType) {
+        this.countType = countType;
+    }
 
     @Override
     public String toString() {
