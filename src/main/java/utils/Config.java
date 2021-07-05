@@ -8,6 +8,7 @@ public interface Config {
     //public static String datasetPath = "data/prj2_dataset.csv";
     public static String datasetPath = "data/test.csv";
     public static String TOPIC1 = "prova";
+    public static String TOPIC_Q1 = "QUERY1";
     public static Double accTime = 0.0;
     public static Integer TIME_DAYS = 2;
     public static Integer TIME_DAYS_7 = 7;

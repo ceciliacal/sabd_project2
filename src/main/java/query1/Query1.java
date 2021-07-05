@@ -9,13 +9,19 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.util.Collector;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.LongSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import utils.Config;
 import utils.DataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.Properties;
 import java.util.TimeZone;
 
 public class Query1 {
@@ -53,7 +59,7 @@ public class Query1 {
                                }
 
                 })
-                .name("query1")
+
 
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {
 
@@ -69,92 +75,30 @@ public class Query1 {
                     //System.out.println("-----CACCCAAAAAAAAAA---");
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
+                .addSink(new FlinkKafkaProducer<String>(Config.TOPIC_Q1,
+                        new ProducerStringSerializationSchema(Config.TOPIC_Q1),
+                        getFlinkPropAsProducer(),
+                        FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+                .name("query1Result");
 
-
-                .print();
-
-
+                //.print();
 
         env.execute("aiuto");
 
-                /*
-                .flatMap(new FlatMapFunction<DataEntity, Object>() {
-                    @Override
-                    public void flatMap(DataEntity data, Collector<Object> collector) throws Exception {
-                        System.out.println("--bho: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+", "+data.getSea());
-                        collector.collect(data);
-                    }
-                });
-
-                 */
-
-                /*
-                .window(TumblingEventTimeWindows.of(Time.seconds(1)))
-                .process(new MyProcessWindowFunction());
-
-                 */
-
-
-                /*
-                .aggregate(new AverageAggregate())
-                .flatMap(new FlatMapFunction<Tuple2<String, Double>, String>() {
-                    @Override
-                    public void flatMap(Tuple2<String, Double> bho, Collector<String> out)  {
-                        System.out.println("--bho: "+bho);
-                        String bho2 = "merda";
-                        out.collect(bho2);
-                    }
-                }).print();
-
-                 */
-
-
-
-
-                //windowFunction che calcola media sui valori in quella window
-                //devo fare funzione con window da passare come secondo param a aggregate per prendere il ts di quando inizia calcolo media
-                //.aggregate(new AverageAggregate(), new MyProcessWindowFunction())
-
-                /*
-                .process(new KeyedProcessFunction<Tuple2<String,Double>, Tuple2<String,Double>>() {
-                    public void processElement(Tuple2<String,Double> o, KeyedProcessFunction.Context context, Collector<Tuple2<String,Double>> collector) throws Exception {
-
-                  }
-
-                 */
-        
-
-
-
-
-
-
-
-
         System.out.println("----sto in runQuery1");
     }
-}
 
-/*
-    private static class WrapWithWeek
-            extends ProcessWindowFunction<DataEntity, Tuple2<String,Double>, TimeWindow> {
 
-        public void process(Type key,
-                            KeyedProcessFunction.Context context,
-                            Iterable<DataEntity> reducedEvents,
-                            Collector<Tuple2<String,Double> out) {
-            Long sum = reducedEvents.iterator().next();
-            out.collect(new Tuple3<Type, Long, Long>(key, context.window.getStart(), sum));
-        }
+    public static Properties getFlinkPropAsProducer(){
+        Properties properties = new Properties();
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,Config.KAFKA_BROKERS);
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG,Config.CLIENT_ID);
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
-        @Override
-        public void process(Object o, Context context, Iterable iterable, Collector collector) throws Exception {
 
-        }
+        return properties;
+
     }
+
 }
-
- */
-
-
-
