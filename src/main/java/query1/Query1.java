@@ -1,12 +1,13 @@
 package query1;
 
+import connectionToKafka.MyProducer;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -17,13 +18,7 @@ import java.util.Properties;
 public class Query1 {
 
 
-    public static void runQuery1(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, FlinkKafkaConsumer consumer) throws Exception {
-
-
-        DataStream<DataEntity> stream = env.addSource(consumer)
-                .map(new MyMapFunction())
-                .returns(DataEntity.class)
-                ;
+    public static void runQuery1(WatermarkStrategy<DataEntity> strategy, StreamExecutionEnvironment env, DataStream<DataEntity> stream) throws Exception {
 
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
@@ -31,7 +26,7 @@ public class Query1 {
                 .keyBy(line -> line.getCell())
                 .window(TumblingEventTimeWindows.of(Time.days(7)))
                 .aggregate( new AverageAggregate(),
-                            new MyProcessWindowFunction())
+                            new Query1ProcessWindowFunction())
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {
 
                     System.out.println("-----------------------");
@@ -44,33 +39,20 @@ public class Query1 {
                     //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
-                /*
                 .addSink(new FlinkKafkaProducer<String>(Config.TOPIC_Q1,
-                        new ProducerStringSerializationSchema(Config.TOPIC_Q1),
-                        getFlinkPropAsProducer(),
+                        new utils.ProducerStringSerializationSchema(Config.TOPIC_Q1),
+                        MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
                 .name("query1Result");
 
-                 */
 
-                .print();
+
+                //.print();
 
         env.execute("query1");
 
         System.out.println("----sto in runQuery1");
     }
 
-
-    public static Properties getFlinkPropAsProducer(){
-        Properties properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,Config.KAFKA_BROKERS);
-        properties.put(ProducerConfig.CLIENT_ID_CONFIG,Config.CLIENT_ID);
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
-
-
-        return properties;
-
-    }
 
 }

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import utils.Config;
 
@@ -218,6 +219,19 @@ public class MyProducer {
 
 
         return sleepTimeSec;
+
+    }
+
+    //funzione che crea proprietà per creare sink verso kafka
+    public static Properties getFlinkPropAsProducer(){
+        Properties properties = new Properties();
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,Config.KAFKA_BROKERS);
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG,Config.CLIENT_ID);
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+
+
+        return properties;
 
     }
 

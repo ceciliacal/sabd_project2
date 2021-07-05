@@ -57,6 +57,7 @@ public class OutputQuery1 {
 
 
     public static String writeQuery1Result(OutputQuery1 myOutput){
+        //scrive questo (esempio): 3> 2015-04-09,C20,army,0.29,others,0.57
 
         StringBuilder sb = new StringBuilder();
         Date timestamp = myOutput.getDate();

@@ -11,7 +11,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import query1.Query1;
+import utils.MyMapFunction;
 import query2.Query2;
 import utils.Config;
 
@@ -30,16 +30,16 @@ public class MyConsumer {
                                                 .withIdleness(Duration.ofMinutes(1))
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
         StreamExecutionEnvironment env = createEnviroment(consumer);
-        //DataStream<DataEntity> stream = dataPrep(env, consumer);
-        //Query1.runQuery1(strategy, env, consumer);
-        Query2.runQuery2(strategy, env, consumer);
-        //env.execute();
 
+        DataStream<DataEntity> stream = env.addSource(consumer)
+                .map(new MyMapFunction())
+                .returns(DataEntity.class);
 
+        //Query1.runQuery1(strategy, env, stream);
+        Query2.runQuery2(strategy, env, stream);
 
     }
 
-    //Consumer<String, String>
     public static FlinkKafkaConsumer<String> createConsumer() throws Exception {
         // Create properties
         final Properties props = new Properties();
@@ -50,30 +50,9 @@ public class MyConsumer {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
         // Create the consumer using properties
-
-        System.out.println("consumer working");
-
         FlinkKafkaConsumer<String> myConsumer = new FlinkKafkaConsumer<>(Config.TOPIC1, new SimpleStringSchema(), props);
-        //myConsumer.WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
-
-        //WatermarkStrategy<DataEntity> strategy = WatermarkStrategy.<DataEntity>forBoundedOutOfOrderness(Duration.ofMinutes(1)).withIdleness(Duration.ofMinutes(1)).withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
-        //myConsumer.assignTimestampsAndWatermarks(strategy);
-
 
         return myConsumer;
-
-        //ora devo fare funzione per query1 che che come input riceve il DataStream però prima devo settare setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
-
-        /*
-
-        .process(new KeyedProcessFunction<String, DataEntity, DataEntity>() {
-                    @Override
-                    public void processElement(DataEntity dataEntity, Context context, Collector<DataEntity> collector) throws Exception {
-                        System.out.println("dopo trasformazioni: "+dataEntity.getShipId()+", "+dataEntity.getShipType()+", "+dataEntity.getSea()+", "+dataEntity.getCell());
-                    }
-                });
-
-         */
 
     }
 
@@ -85,17 +64,8 @@ public class MyConsumer {
         return env;
     }
 
-
-
         
     public static DataStream<DataEntity> dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
-
-        //nelle funzioni di flink, nei <> si mette il tipo dei dati sia dei param di input che del tipo di ritorno
-        // String qui è parametro di input e Collector<DataEntity> è il tipo di ritorno
-        //e poi nell'override si specifica params e tipo nel modo classico, riprendendoli da quelli riportati in <>
-
-        //to process data simultaneously on multiple concurrent instances, group the data through the key by operation
-        //con keyed stream gli operatori sono stateful ??
 
         DataStream<DataEntity> stream = env.addSource(consumer).
                 flatMap(new FlatMapFunction<String, DataEntity> () {
@@ -110,16 +80,11 @@ public class MyConsumer {
 
                         collector.collect(data);
 
-
                     };
 
-
                 }).name("dataEntity_stream");
-
-
         //stream.print();
         //env.execute("ingestingData");
-
 
         return stream;
     }

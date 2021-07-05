@@ -1,5 +1,8 @@
 package query2;
 
+import utils.Config;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class OutputQuery2 {
@@ -77,6 +80,29 @@ public class OutputQuery2 {
             pmRank.put(entry.getValue(), entry.getKey());
             count++;
         }
+
+    }
+
+    public static String writeQuery2Result(OutputQuery2 myOutput){
+
+        StringBuilder sb = new StringBuilder();
+        Date timestamp = myOutput.getDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
+
+        sb.append("Finestra temporale di "+ Config.TIME_DAYS_7+" giorni\n");
+        sb.append(simpleDateFormat.format(timestamp));
+        sb.append(",");
+        sb.append(myOutput.getTypeSea());
+        sb.append(",");
+        sb.append("00:00-11:59");
+        sb.append(",");
+        sb.append(myOutput.getAmRank());
+        sb.append(",");
+        sb.append("12:00-23:59");
+        sb.append(",");
+        sb.append(myOutput.getPmRank());
+
+        return sb.toString();
 
     }
 

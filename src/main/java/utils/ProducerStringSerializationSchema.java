@@ -1,4 +1,4 @@
-package query1;
+package utils;
 
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerRecord;

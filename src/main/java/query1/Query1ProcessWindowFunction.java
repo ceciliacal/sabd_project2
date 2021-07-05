@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class MyProcessWindowFunction extends ProcessWindowFunction <OutputQuery1, OutputQuery1, String, TimeWindow>{
+public class Query1ProcessWindowFunction extends ProcessWindowFunction <OutputQuery1, OutputQuery1, String, TimeWindow>{
 
     @Override
     public void process(String key, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> out) throws Exception {
