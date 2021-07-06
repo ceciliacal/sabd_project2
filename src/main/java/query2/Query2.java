@@ -13,6 +13,7 @@ import utils.Ship;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 
 public class Query2 {
@@ -20,17 +21,13 @@ public class Query2 {
     public static void runQuery2(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         stream
-                .assignTimestampsAndWatermarks(strategy)
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofDays(7))
+                        .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
                 .keyBy(line -> line.getSea())
                 .window(TumblingEventTimeWindows.of(Time.days(7)))
                 .aggregate(new RankAggregate(), new Query2ProcessWindowFunction())
-                .map((MapFunction<OutputQuery2, String>) myOutput -> {
+                .map((MapFunction<OutputQuery2, String>) myOutput -> OutputQuery2.writeQuery2Result(myOutput))
 
-                    return OutputQuery2.writeQuery2Result(myOutput);
-
-                    //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
-                    //System.out.println("set: "+myOutput.getCountType().entrySet());
-                })
                 /*
                 .addSink(new FlinkKafkaProducer<String>("QUERY2",
                         new utils.ProducerStringSerializationSchema("QUERY2"),
@@ -38,6 +35,8 @@ public class Query2 {
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
 
                  */
+
+
                 .name("query2Result")
 
 

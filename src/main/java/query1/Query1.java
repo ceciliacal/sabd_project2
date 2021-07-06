@@ -11,6 +11,8 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import utils.Config;
 import utils.Ship;
 
+import java.time.Duration;
+
 public class Query1 {
 
 
@@ -18,7 +20,8 @@ public class Query1 {
 
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
-                .assignTimestampsAndWatermarks(strategy)
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
+                        .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
                 .keyBy(line -> line.getCell())
                 .window(TumblingEventTimeWindows.of(Time.days(7)))
                 .aggregate( new AverageAggregate(),

@@ -6,7 +6,7 @@ public interface Config {
     public static String KAFKA_BROKERS = "localhost:9091";
     public static String CLIENT_ID = "myclient";
     //public static String datasetPath = "data/prj2_dataset.csv";
-    public static String datasetPath = "data/datasetPROVA2000.csv";
+    public static String datasetPath = "data/test.csv";
     public static String TOPIC1 = "prova";
     public static String TOPIC_Q1 = "QUERY1";
     public static Double accTime = 0.0;

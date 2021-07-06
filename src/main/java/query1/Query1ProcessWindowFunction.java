@@ -13,11 +13,12 @@ public class Query1ProcessWindowFunction extends ProcessWindowFunction <OutputQu
     @Override
     public void process(String key, Context context, Iterable<OutputQuery1> iterable, Collector<OutputQuery1> out) throws Exception {
 
+        System.out.println("start della window: "+context.window().getStart());
+
         OutputQuery1 res = iterable.iterator().next();
         Date date = new Date();
         date.setTime(context.window().getStart());
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy hh:mm:ss a z");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        System.out.println("date IN WINDOWFUNCTION = "+date);
 
         res.setDate(date);
         res.setCellId(key);

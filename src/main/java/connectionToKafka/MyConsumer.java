@@ -11,6 +11,7 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import query1.Query1;
 import utils.MyMapFunction;
 import query2.Query2;
 import utils.Config;
@@ -26,10 +27,15 @@ public class MyConsumer {
     public static void main(String[] args) throws Exception {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
+
         WatermarkStrategy<Ship> strategy = WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
-                                                .withIdleness(Duration.ofMinutes(1))
+                                                //.withIdleness(Duration.ofDays(5))
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+
+
+
         StreamExecutionEnvironment env = createEnviroment(consumer);
+
 
         DataStream<Ship> stream = env.addSource(consumer)
                 .map(new MyMapFunction())
