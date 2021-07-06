@@ -23,9 +23,7 @@ public class OutputQuery2 {
     public void calculateAmRank(Map<String, List<String>> am){
 
         Map<Integer, String> swappedKeyValue = new HashMap<>();
-        System.out.println("--calculate in OUTPUTQUERY2 --- amRank: "+this.amRank);
         this.amRank = new HashMap<>();
-        System.out.println("--calculate in OUTPUTQUERY2 --- amRank AFTER: "+this.amRank);
         int count = 0;
         int max = 2;
 
@@ -44,9 +42,14 @@ public class OutputQuery2 {
 
         //prendo primi tre elementi da sortedCells
         for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
-            if (count>max) break;
-            amRank.put(entry.getValue(), entry.getKey());
-            count++;
+            if (count>max) {
+                break;
+            }
+            else{
+                amRank.put(entry.getValue(), entry.getKey());
+                count++;
+            }
+
         }
 
     }
@@ -54,9 +57,7 @@ public class OutputQuery2 {
     public void calculatePmRank(Map<String, List<String>> pm){
 
         Map<Integer, String> swappedKeyValue = new HashMap<>();
-        System.out.println("--calculate in OUTPUTQUERY2 --- pmRank: "+this.pmRank);
         this.pmRank = new HashMap<>();
-        System.out.println("--calculate in OUTPUTQUERY2 --- pmRank AFTER: "+this.pmRank);
 
         int count = 0;
         int max = 2;
@@ -76,9 +77,14 @@ public class OutputQuery2 {
 
         //prendo primi tre elementi da sortedCells
         for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
-            if (count>max) break;
-            pmRank.put(entry.getValue(), entry.getKey());
-            count++;
+            if (count>max) {
+                break;
+            }
+            else{
+                pmRank.put(entry.getValue(), entry.getKey());
+                count++;
+            }
+
         }
 
     }
@@ -89,7 +95,7 @@ public class OutputQuery2 {
         Date timestamp = myOutput.getDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
 
-        sb.append("Finestra temporale di "+ Config.TIME_DAYS_7+" giorni\n");
+        sb.append("===Finestra temporale di "+ Config.TIME_DAYS_7+" giorni: ");
         sb.append(simpleDateFormat.format(timestamp));
         sb.append(",");
         sb.append(myOutput.getTypeSea());
@@ -100,7 +106,7 @@ public class OutputQuery2 {
         sb.append(",");
         sb.append("12:00-23:59");
         sb.append(",");
-        sb.append(myOutput.getPmRank());
+        sb.append(myOutput.getPmRank()+"===");
 
         return sb.toString();
 

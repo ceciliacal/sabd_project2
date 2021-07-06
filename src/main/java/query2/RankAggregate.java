@@ -11,7 +11,7 @@ public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2,
 
     @Override
     public AccumulatorQuery2 add(Ship data, AccumulatorQuery2 acc) {
-        System.out.println("==dataentity: " + data);
+        //System.out.println("==dataentity: " + data);
         System.out.println("---add");
 
         String shipTimestamp = data.getTimestamp();
@@ -31,8 +31,8 @@ public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2,
     @Override
     public OutputQuery2 getResult(AccumulatorQuery2 acc) {
         System.out.println("---result");
-        acc.getAm().forEach((k, v) -> System.out.println("k: " + k + " v: " + v));
-        acc.getPm().forEach((k, v) -> System.out.println("k: " + k + " v: " + v));
+        acc.getAm().forEach((k, v) -> System.out.println("AM k: " + k + " v: " + v));
+        acc.getPm().forEach((k, v) -> System.out.println("PM k: " + k + " v: " + v));
         return new OutputQuery2(acc.getAm(), acc.getPm());
 
     }

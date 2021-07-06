@@ -31,14 +31,17 @@ public class Query2 {
                     //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
+                /*
                 .addSink(new FlinkKafkaProducer<String>("QUERY2",
                         new utils.ProducerStringSerializationSchema("QUERY2"),
                         MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
-                .name("query2Result");
+
+                 */
+                .name("query2Result")
 
 
-                //.print();
+                .print();
 
         env.execute("query2");
 
