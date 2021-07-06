@@ -133,7 +133,8 @@ PM k: D19 v: [0x7086e9bed7ea1ca1b4ec7ea3955ef732792d29b8]
             }
             //se c'è già la chiave che è la size del num di navi, devo appendere la cella ai values già presenti
             else{
-                List<String> valuesGiaPresenti = entry.getValue();
+                List<String> valuesGiaPresenti = swappedKeyValue.get(size);
+
                 System.out.println("valuesGiaPresenti: "+valuesGiaPresenti);
 
                 valuesGiaPresenti.add(entry.getKey());
@@ -153,10 +154,14 @@ PM k: D19 v: [0x7086e9bed7ea1ca1b4ec7ea3955ef732792d29b8]
 
         //prendo primi tre elementi da sortedCells
         for (Map.Entry<Integer, List<String>> entry : sortedCells.entrySet()){
+
             if (count>max) {
                 break;
             }
             else{
+
+                // TODO:  ---- se piu celle hanno stessa cardinalità, come faccio a riportare solo le prime 3? ----
+
                 result.put(entry.getValue(), entry.getKey());
                 count++;
             }

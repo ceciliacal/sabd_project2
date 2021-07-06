@@ -11,8 +11,8 @@ public class OutputQuery2 {
     private String typeSea;
 
     //key: cella value: num navi
-    private Map<String, Integer> amRank;
-    private Map<String, Integer> pmRank;
+    private Map<List<String>, Integer> amRank;
+    private Map<List<String>, Integer> pmRank;
 
     public OutputQuery2(Map<String, List<String>> am, Map<String, List<String>> pm) {
 
@@ -22,7 +22,7 @@ public class OutputQuery2 {
 
     public void calculateAmRank(Map<String, List<String>> am){
 
-        Map<Integer, String> swappedKeyValue = new HashMap<>();
+        Map<Integer, List<String>> swappedKeyValue = new HashMap<>();
         this.amRank = new HashMap<>();
         int count = 0;
         int max = 2;
@@ -30,18 +30,30 @@ public class OutputQuery2 {
         //io ho idCella, listaIDs -> mi servono le 3 liste con size maggiore
 
         for (Map.Entry<String, List<String>> entry : am.entrySet()) {
+            List<String> values = new ArrayList<>();
             int size = entry.getValue().size();
-            swappedKeyValue.put(size, entry.getKey());
+            if (!swappedKeyValue.containsKey(size)){
+                values.add(entry.getKey());
+                swappedKeyValue.put(size, values);
+            }
+            //se c'è già la chiave che è la size del num di navi, devo appendere la cella ai values già presenti
+            else{
+                List<String> valuesAlreadyInside = swappedKeyValue.get(size);
+
+                valuesAlreadyInside.add(entry.getKey());
+                swappedKeyValue.put(size, valuesAlreadyInside);
+
+            }
         }
 
         //key: num navi + alto, value: cella
-        Map<Integer,String> sortedCells = new TreeMap<>(Collections.reverseOrder());
+        Map<Integer,List<String>> sortedCells = new TreeMap<>(Collections.reverseOrder());
         sortedCells.putAll(swappedKeyValue);
 
         System.out.println("OUTPUTQUERY2: sortedCells COMPLETA di AM: "+sortedCells);
 
         //prendo primi tre elementi da sortedCells
-        for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
+        for (Map.Entry<Integer, List<String>> entry : sortedCells.entrySet()){
             if (count>max) {
                 break;
             }
@@ -56,7 +68,7 @@ public class OutputQuery2 {
 
     public void calculatePmRank(Map<String, List<String>> pm){
 
-        Map<Integer, String> swappedKeyValue = new HashMap<>();
+        Map<Integer, List<String>> swappedKeyValue = new HashMap<>();
         this.pmRank = new HashMap<>();
 
         int count = 0;
@@ -65,18 +77,34 @@ public class OutputQuery2 {
         //io ho idCella, listaIDs -> mi servono le 3 liste con size maggiore
 
         for (Map.Entry<String, List<String>> entry : pm.entrySet()) {
+            List<String> values = new ArrayList<>();
             int size = entry.getValue().size();
-            swappedKeyValue.put(size, entry.getKey());
+
+            //se non c'è già quella chiave (cioè quel numero di navi con associato le celle)
+            if (!swappedKeyValue.containsKey(size)){
+
+                values.add(entry.getKey());
+                swappedKeyValue.put(size, values);
+            }
+            //se c'è già la chiave che è la size del num di navi, devo appendere la cella ai values già presenti
+            else{
+                List<String> valuesGiaPresenti = swappedKeyValue.get(size);
+
+                valuesGiaPresenti.add(entry.getKey());
+                swappedKeyValue.put(size, valuesGiaPresenti);
+
+            }
+
         }
 
         //key: num navi + alto, value: cella
-        Map<Integer,String> sortedCells = new TreeMap<>(Collections.reverseOrder());
+        Map<Integer, List<String>> sortedCells = new TreeMap<>(Collections.reverseOrder());
         sortedCells.putAll(swappedKeyValue);
 
         System.out.println("OUTPUTQUERY2: sortedCells COMPLETA di PM: "+sortedCells);
 
         //prendo primi tre elementi da sortedCells
-        for (Map.Entry<Integer, String> entry : sortedCells.entrySet()){
+        for (Map.Entry<Integer, List<String>> entry : sortedCells.entrySet()){
             if (count>max) {
                 break;
             }
@@ -138,19 +166,19 @@ public class OutputQuery2 {
         this.typeSea = typeSea;
     }
 
-    public Map<String, Integer> getAmRank() {
+    public Map<List<String>, Integer> getAmRank() {
         return amRank;
     }
 
-    public void setAmRank(Map<String, Integer> amRank) {
+    public void setAmRank(Map<List<String>, Integer> amRank) {
         this.amRank = amRank;
     }
 
-    public Map<String, Integer> getPmRank() {
+    public Map<List<String>, Integer> getPmRank() {
         return pmRank;
     }
 
-    public void setPmRank(Map<String, Integer> pmRank) {
+    public void setPmRank(Map<List<String>, Integer> pmRank) {
         this.pmRank = pmRank;
     }
 }
