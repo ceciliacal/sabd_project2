@@ -46,6 +46,8 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
+    volumes:
+      - ../target:/opt/flink/lib/
   
   taskmanager:
     image: flink:latest
