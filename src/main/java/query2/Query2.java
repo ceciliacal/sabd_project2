@@ -28,7 +28,7 @@ public class Query2 {
 
                  */
                 .keyBy(line -> line.getSea())
-                .window(TumblingEventTimeWindows.of(Time.days(7)))
+                .window(TumblingEventTimeWindows.of(Time.days(7), Time.days(+5)))
                 .aggregate(new RankAggregate(), new Query2ProcessWindowFunction())
                 .map((MapFunction<OutputQuery2, String>) myOutput -> {
                     return OutputQuery2.writeQuery2Result(myOutput);
@@ -36,21 +36,6 @@ public class Query2 {
                 .name("query2Result")
                 .print();
 
-        /*
-
-                DataStream<Tuple6<String, String, String, Map<List<String>, Integer>, String, Map<List<String>, Integer>>> bho = stream
-                .map(new TupleConverter())
-
-
-                .writeAsCsv("bho.csv").setParallelism(1)
-         */
-
-
-        /*
-        .map(new TupleConverter())
-                .writeAsCsv("bho")
-                ;
-         */
 
         /*
                 .addSink(new FlinkKafkaProducer<String>("QUERY2",
@@ -59,11 +44,6 @@ public class Query2 {
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
                 .name("query2Result");
          */
-
-
-
-
-
 
 
                 //.print();

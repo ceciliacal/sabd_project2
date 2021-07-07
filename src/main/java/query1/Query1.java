@@ -26,7 +26,7 @@ public class Query1 {
 
                  */
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.days(7)))
+                .window(TumblingEventTimeWindows.of(Time.days(30), Time.days(+5)))
                 .aggregate( new AverageAggregate(),
                             new Query1ProcessWindowFunction())
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {
@@ -42,12 +42,15 @@ public class Query1 {
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
 
+                /*
                 .addSink(new FlinkKafkaProducer<String>(Config.TOPIC_Q1,
                         new utils.ProducerStringSerializationSchema(Config.TOPIC_Q1),
                         MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
 
 
+                 */
+                .print()
                 .setParallelism(1)
 
                 .name("query1Result");

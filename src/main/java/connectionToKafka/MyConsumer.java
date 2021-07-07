@@ -44,8 +44,8 @@ public class MyConsumer {
                 .map(new MyMapFunction())
                 .returns(Ship.class);
 
-        //Query1.runQuery1(strategy, env, stream);
-        Query2.runQuery2(strategy, env, stream);
+        Query1.runQuery1(strategy, env, stream);
+        //Query2.runQuery2(strategy, env, stream);
 
     }
 

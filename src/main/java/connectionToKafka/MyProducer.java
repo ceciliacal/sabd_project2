@@ -50,7 +50,7 @@ public class MyProducer {
         //Putting it in a try catch  block to catch File read exceptions.
         try {
             //Setting up a Stream to our CSV File.
-            Stream<String> FileStream = Files.lines(Paths.get(Config.datasetPath));
+            Stream<String> FileStream = Files.lines(Paths.get("data/"+Config.datasetPath+".csv"));
 
             //Read each line using Foreach loop on the FileStream object and remove header
 
@@ -83,25 +83,9 @@ public class MyProducer {
                 }
 
 
-                /*
-                dateList.add(date);
-                Collections.sort(dateList, new Comparator<Date>() {
-                    @Override
-                    public int compare(Date d1, Date d2) {
-                        return d1.compareTo(d2);
-                    }
-                });
-
-
-                System.out.println("dateList = "+dateList);
-                
-                 */
-                System.out.println("csvTimestamps = "+csvTimestamps);
 
                 System.out.println("line: " + line);
 
-
-                //line = String.join(",", value);  //trasforma da String[] a String
 
                 //qui dovrei fare un metodo che ritarda l'invio delle tuple al broker in base
                 // alla differenza tra i timestamp di due msg consecutivi

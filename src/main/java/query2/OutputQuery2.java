@@ -120,7 +120,8 @@ public class OutputQuery2 {
 
     public static String writeQuery2Result(OutputQuery2 myOutput) throws IOException {
 
-        String outputPath = "data/query2Results.csv";
+
+        String outputPath = "results/"+Config.datasetPath+"_QUERY2";
 
         PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 
@@ -140,6 +141,7 @@ public class OutputQuery2 {
         sb.append("12:00-23:59");
         sb.append(",");
         sb.append(myOutput.getPmRank());
+        sb.append("\n");
 
         writer.write(sb.toString());
         writer.flush();
