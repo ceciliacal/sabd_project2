@@ -12,7 +12,7 @@ public class AccumulatorQuery1 implements Serializable {
     private Map<String, List<String>> countShipType;
 
     public AccumulatorQuery1() {
-
+        System.out.println("--sto in costruttore accumulator");
         this.countShipType = new HashMap<>();
     }
 

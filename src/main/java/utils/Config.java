@@ -3,12 +3,12 @@ package utils;
 import java.text.SimpleDateFormat;
 
 public interface Config {
-    public static String KAFKA_BROKERS = "localhost:9091";
+    public static String KAFKA_BROKERS = "kafka1:19091";
     public static String CLIENT_ID = "myclient";
-    //public static String datasetPath = "test";
+    public static String datasetPath = "test";
     //public static String datasetPath = "prj2_dataset";
     //public static String datasetPath = "datasetPROVA2000";
-    public static String datasetPath = "dataset Prova 8000";
+    //public static String datasetPath = "dataset Prova 8000";
     public static String TOPIC1 = "prova";
     public static String TOPIC_Q1 = "QUERY1";
     public static Double accTime = 0.0;

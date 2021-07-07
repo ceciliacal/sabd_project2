@@ -60,3 +60,11 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
+
+  app:
+    build: .
+    depends_on:
+      - zookeeper
+      - kafka1
+      - jobmanager
+      - taskmanager
