@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import utils.Config;
 
@@ -70,10 +71,10 @@ public class MyProducer {
                 String tsCurrent = value[6];
 
                 System.out.println("tsCurrent = " + tsCurrent);
-                Date date = null;
+                Long date = null;
                 for (SimpleDateFormat dateFormat: dateFormats) {
                     try {
-                        date = dateFormat.parse(tsCurrent);
+                        date = dateFormat.parse(tsCurrent).getTime();
 
                         //System.out.println("---cacca---  "+date);
 
@@ -82,6 +83,7 @@ public class MyProducer {
                 }
 
 
+                /*
                 dateList.add(date);
                 Collections.sort(dateList, new Comparator<Date>() {
                     @Override
@@ -91,7 +93,10 @@ public class MyProducer {
                 });
 
 
-                //System.out.println("csvTimestamps = "+csvTimestamps);
+                System.out.println("dateList = "+dateList);
+                
+                 */
+                System.out.println("csvTimestamps = "+csvTimestamps);
 
                 System.out.println("line: " + line);
 
@@ -118,13 +123,6 @@ public class MyProducer {
                 //aggiungo ts alla lista (a partire dal primo elemento)
                 csvTimestamps.add(tsCurrent);
 
-                /*
-                if (count.get()>42){
-                    exit(5);
-                }
-
-                 */
-
                 if (sleepTime!=null){
                     try {
                         System.out.println("sleep time: "+sleepTime+" sec");
@@ -135,10 +133,18 @@ public class MyProducer {
                     }
                 }
 
+                System.out.println("prima di invio, date: "+date);
+                String dateStrKey = String.valueOf(date);
                 //invio dei messaggi
+
+                /*
                 final ProducerRecord<String, String> CsvRecord = new ProducerRecord<>(
-                        Config.TOPIC1, key, line
+                        Config.TOPIC1, 0, date, date, line
                 );
+
+                 */
+
+                ProducerRecord<String, String> CsvRecord = new ProducerRecord<>( Config.TOPIC1, 0, date, dateStrKey, line);
 
                 // Send a record and set a callback function with metadata passed as argument.
 

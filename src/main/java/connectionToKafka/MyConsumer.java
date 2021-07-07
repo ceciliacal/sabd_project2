@@ -26,11 +26,14 @@ public class MyConsumer {
 
     public static void main(String[] args) throws Exception {
 
+
         FlinkKafkaConsumer<String> consumer = createConsumer();
 
         WatermarkStrategy<Ship> strategy = WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
                                                 //.withIdleness(Duration.ofDays(5))
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+
+        consumer.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(1)));
 
 
 

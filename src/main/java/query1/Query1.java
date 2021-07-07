@@ -20,8 +20,11 @@ public class Query1 {
 
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
+                /*
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
                         .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
+
+                 */
                 .keyBy(line -> line.getCell())
                 .window(TumblingEventTimeWindows.of(Time.days(7)))
                 .aggregate( new AverageAggregate(),
@@ -38,15 +41,20 @@ public class Query1 {
                     //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));
                     //System.out.println("set: "+myOutput.getCountType().entrySet());
                 })
+
                 .addSink(new FlinkKafkaProducer<String>(Config.TOPIC_Q1,
                         new utils.ProducerStringSerializationSchema(Config.TOPIC_Q1),
                         MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+
+
+                .setParallelism(1)
+
                 .name("query1Result");
 
 
 
-                //.print();
+
 
         env.execute("query1");
 

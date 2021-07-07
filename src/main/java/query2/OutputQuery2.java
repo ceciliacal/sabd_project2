@@ -2,6 +2,7 @@ package query2;
 
 import utils.Config;
 
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -117,16 +118,20 @@ public class OutputQuery2 {
 
     }
 
-    public static String writeQuery2Result(OutputQuery2 myOutput){
+    public static String writeQuery2Result(OutputQuery2 myOutput) throws IOException {
+
+        String outputPath = "data/query2Results.csv";
+
+        PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 
         StringBuilder sb = new StringBuilder();
         Date timestamp = myOutput.getDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
 
-        sb.append("===Finestra temporale di "+ Config.TIME_DAYS_7+" giorni: ");
         sb.append(simpleDateFormat.format(timestamp));
         sb.append(",");
         sb.append(myOutput.getTypeSea());
+
         sb.append(",");
         sb.append("00:00-11:59");
         sb.append(",");
@@ -134,7 +139,11 @@ public class OutputQuery2 {
         sb.append(",");
         sb.append("12:00-23:59");
         sb.append(",");
-        sb.append(myOutput.getPmRank()+"===");
+        sb.append(myOutput.getPmRank());
+
+        writer.write(sb.toString());
+        writer.flush();
+        writer.close();
 
         return sb.toString();
 

@@ -2,6 +2,9 @@ package query1;
 
 import utils.Config;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -56,8 +59,12 @@ public class OutputQuery1 {
     }
 
 
-    public static String writeQuery1Result(OutputQuery1 myOutput){
+    public static String writeQuery1Result(OutputQuery1 myOutput) throws FileNotFoundException {
         //scrive questo (esempio): 3> 2015-04-09,C20,army,0.29,others,0.57
+
+        String outputPath = "data/query1Results.csv";
+
+        PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 
         StringBuilder sb = new StringBuilder();
         Date timestamp = myOutput.getDate();
@@ -72,6 +79,10 @@ public class OutputQuery1 {
         myOutput.getCountType().forEach((k,v) -> {
             sb.append(",");sb.append(k).append(",").append(String.format(Locale.ENGLISH, "%.2g", (double)v/numDays));
         });
+
+        writer.write(sb.toString());
+        writer.flush();
+        writer.close();
 
         return sb.toString();
 

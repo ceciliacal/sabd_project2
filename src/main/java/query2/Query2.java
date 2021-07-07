@@ -3,6 +3,7 @@ package query2;
 import connectionToKafka.MyProducer;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
@@ -21,26 +22,52 @@ public class Query2 {
     public static void runQuery2(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         stream
+                /*
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofDays(7))
                         .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
+
+                 */
                 .keyBy(line -> line.getSea())
                 .window(TumblingEventTimeWindows.of(Time.days(7)))
                 .aggregate(new RankAggregate(), new Query2ProcessWindowFunction())
-                .map((MapFunction<OutputQuery2, String>) myOutput -> OutputQuery2.writeQuery2Result(myOutput))
+                .map((MapFunction<OutputQuery2, String>) myOutput -> {
+                    return OutputQuery2.writeQuery2Result(myOutput);
+                })
+                .name("query2Result")
+                .print();
 
-                /*
+        /*
+
+                DataStream<Tuple6<String, String, String, Map<List<String>, Integer>, String, Map<List<String>, Integer>>> bho = stream
+                .map(new TupleConverter())
+
+
+                .writeAsCsv("bho.csv").setParallelism(1)
+         */
+
+
+        /*
+        .map(new TupleConverter())
+                .writeAsCsv("bho")
+                ;
+         */
+
+        /*
                 .addSink(new FlinkKafkaProducer<String>("QUERY2",
                         new utils.ProducerStringSerializationSchema("QUERY2"),
                         MyProducer.getFlinkPropAsProducer(),
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
-
-                 */
-
-
-                .name("query2Result")
+                .name("query2Result");
+         */
 
 
-                .print();
+
+
+
+
+
+                //.print();
+        env.setParallelism(1);
 
         env.execute("query2");
 
