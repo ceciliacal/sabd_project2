@@ -22,14 +22,17 @@ public class Ship {
     String cell;
     Date tsDate;
     String sea;
+    String tripId;
 
 
-    public Ship(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp){
+
+    public Ship(String shipId, Integer shipTypeInt, double lon, double lat, String timestamp, String tripId){
         this.shipId = shipId;
         this.shipTypeInt = shipTypeInt;
         this.lon = lon;
         this.lat = lat;
         this.timestamp = timestamp;
+        this.tripId = tripId;
 
         String cell = calculateCell(this.lat, this.lon);
         setCell(cell);
@@ -207,6 +210,13 @@ public class Ship {
     }
 
 
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
 
 
 

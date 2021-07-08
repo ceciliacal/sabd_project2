@@ -12,6 +12,7 @@ import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import query1.Query1;
+import query3.Query3;
 import utils.MyMapFunction;
 import query2.Query2;
 import utils.Config;
@@ -49,6 +50,7 @@ public class MyConsumer {
 
         //Query1.runQuery1(env, stream);
         Query2.runQuery2(env, stream);
+        //Query3.runQuery3(env, stream);
 
     }
 
@@ -64,13 +66,13 @@ public class MyConsumer {
         // Create the consumer using properties
         FlinkKafkaConsumer<String> myConsumer = new FlinkKafkaConsumer<>(Config.TOPIC1, new SimpleStringSchema(), props);
 
-        System.out.println("--Query2 creato consumer--");
+        System.out.println("---creato consumer--");
         return myConsumer;
 
     }
 
     public static StreamExecutionEnvironment createEnviroment(FlinkKafkaConsumer<String> consumer){
-        System.out.println("sto in create env QUERY2--");
+        System.out.println("--sto in create env--");
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);

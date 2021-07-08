@@ -21,7 +21,8 @@ public class Query1 {
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.days(28), Time.days(+12)))
+                .window(TumblingEventTimeWindows.of(Time.days(7), Time.days(+5)))
+                //.window(TumblingEventTimeWindows.of(Time.days(28), Time.days(+12)))
                 .aggregate( new AverageAggregate(),
                             new Query1ProcessWindowFunction())
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {

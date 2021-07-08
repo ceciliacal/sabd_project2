@@ -10,8 +10,6 @@ import java.util.*;
 
 public class OutputQuery1 {
 
-    private final Integer windowSize = Config.TIME_MONTH;
-
     private Date date;
     private String cellId;
     private Map<String, Integer> countType;
@@ -64,14 +62,14 @@ public class OutputQuery1 {
     public static String writeQuery1Result(OutputQuery1 myOutput) throws FileNotFoundException {
         //scrive questo (esempio): 3> 2015-04-09,C20,army,0.29,others,0.57
 
-        String outputPath = "results/"+Config.datasetPath+"_"+Config.TIME_MONTH+"_QUERY1.csv";
+        String outputPath = "results/"+Config.datasetPath+"_"+Config.TIME_DAYS_7+"_QUERY1.csv";
         System.out.println("outputPath: "+outputPath);
         PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 
         StringBuilder sb = new StringBuilder();
         Date timestamp = myOutput.getDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
-        int numDays = Config.TIME_MONTH;
+        int numDays = Config.TIME_DAYS_7;
 
         sb.append(simpleDateFormat.format(timestamp));
         sb.append(",");

@@ -1,11 +1,12 @@
 package query2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccumulatorQuery2 {
+public class AccumulatorQuery2 implements Serializable {
 
     //k: cella, v: lista id nave
     private Map<String, List<String>> am;
