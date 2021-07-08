@@ -1,6 +1,7 @@
 package query3;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -89,6 +90,7 @@ public class Query3 {
 
                             }
                         })
+                .map((MapFunction<FinalOutputQuery3, String>) myOutput -> FinalOutputQuery3.writeQuery3Result(myOutput))
 
                 /*
                 .map((MapFunction<OutputQuery2, String>) myOutput -> {

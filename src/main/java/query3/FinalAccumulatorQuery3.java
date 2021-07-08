@@ -8,7 +8,7 @@ import java.util.TreeMap;
 public class FinalAccumulatorQuery3 implements Serializable {
 
     //k: distance v: tripId
-    private TreeMap<Double, String> distanceTripId;
+    private Map<Double, String> distanceTripId;
 
     public FinalAccumulatorQuery3(){
         this.distanceTripId = new TreeMap<>();
@@ -18,7 +18,7 @@ public class FinalAccumulatorQuery3 implements Serializable {
         distanceTripId.put(distance, tripId);
     }
 
-    public TreeMap<Double, String> getDistanceTripId() {
+    public Map<Double, String> getDistanceTripId() {
         return distanceTripId;
     }
 

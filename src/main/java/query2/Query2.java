@@ -19,13 +19,15 @@ import java.util.*;
 
 public class Query2 {
 
+    public static final int days= Config.TIME_DAYS_7;
+
     public static void runQuery2(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         System.out.println("--sto in runQuery2--");
 
         stream
                 .keyBy(line -> line.getSea())
-                .window(TumblingEventTimeWindows.of(Time.days(7), Time.days(+5)))
+                .window(TumblingEventTimeWindows.of(Time.days(days), Time.days(+5)))
                 //.window(TumblingEventTimeWindows.of(Time.days(Config.TIME_MONTH), Time.days(+12)))
                 .aggregate(new RankAggregate(), new Query2ProcessWindowFunction())
                 .map((MapFunction<OutputQuery2, String>) myOutput -> OutputQuery2.writeQuery2Result(myOutput))

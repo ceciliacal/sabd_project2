@@ -49,8 +49,8 @@ public class MyConsumer {
                 .returns(Ship.class);
 
         //Query1.runQuery1(env, stream);
-        Query2.runQuery2(env, stream);
-        //Query3.runQuery3(env, stream);
+        //Query2.runQuery2(env, stream);
+        Query3.runQuery3(env, stream);
 
     }
 
