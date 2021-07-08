@@ -16,26 +16,24 @@ import java.time.Duration;
 public class Query1 {
 
 
-    public static void runQuery1(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+    public static void runQuery1(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
 
         stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
-                /*
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
-                        .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
-
-                 */
                 .keyBy(line -> line.getCell())
-                .window(TumblingEventTimeWindows.of(Time.days(7), Time.days(+5)))
+                .window(TumblingEventTimeWindows.of(Time.days(28), Time.days(+12)))
                 .aggregate( new AverageAggregate(),
                             new Query1ProcessWindowFunction())
                 .map((MapFunction<OutputQuery1, String>) myOutput -> {
 
+                    /*
                     System.out.println("-----------------------");
                     System.out.println("ts: "+myOutput.getDate());
                     System.out.println("cell: "+myOutput.getCellId());
                     System.out.println("set: "+myOutput.getCountType().entrySet());
 
+
+                     */
                     return OutputQuery1.writeQuery1Result(myOutput);
 
                     //System.out.println("type army: "+(double)(myOutput.getCountType().get(Config.ARMY_TYPE)/Config.TIME_DAYS_7));

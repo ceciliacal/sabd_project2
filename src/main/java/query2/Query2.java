@@ -19,25 +19,24 @@ import java.util.*;
 
 public class Query2 {
 
-    public static void runQuery2(WatermarkStrategy<Ship> strategy, StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+    public static void runQuery2(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+
+        System.out.println("--sto in runQuery2--");
 
         stream
-                /*
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofDays(7))
-                        .withTimestampAssigner((ship, timestamp) -> ship.getTsDate().getTime()))
-
-                 */
                 .keyBy(line -> line.getSea())
                 .window(TumblingEventTimeWindows.of(Time.days(7), Time.days(+5)))
+                //.window(TumblingEventTimeWindows.of(Time.days(Config.TIME_MONTH), Time.days(+12)))
                 .aggregate(new RankAggregate(), new Query2ProcessWindowFunction())
-                .map((MapFunction<OutputQuery2, String>) myOutput -> {
-                    return OutputQuery2.writeQuery2Result(myOutput);
-                })
+                .map((MapFunction<OutputQuery2, String>) myOutput -> OutputQuery2.writeQuery2Result(myOutput))
                 .name("query2Result")
                 .print();
 
 
         /*
+        .map((MapFunction<OutputQuery2, String>) myOutput -> {
+                    return OutputQuery2.writeQuery2Result(myOutput);
+                })
                 .addSink(new FlinkKafkaProducer<String>("QUERY2",
                         new utils.ProducerStringSerializationSchema("QUERY2"),
                         MyProducer.getFlinkPropAsProducer(),
@@ -45,9 +44,6 @@ public class Query2 {
                 .name("query2Result");
          */
 
-
-                //.print();
-        env.setParallelism(1);
 
         env.execute("query2");
 

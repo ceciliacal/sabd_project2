@@ -29,9 +29,12 @@ public class MyConsumer {
 
         FlinkKafkaConsumer<String> consumer = createConsumer();
 
+        /*
         WatermarkStrategy<Ship> strategy = WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
                                                 //.withIdleness(Duration.ofDays(5))
                                                 .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
+
+         */
 
         consumer.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(1)));
 
@@ -44,8 +47,8 @@ public class MyConsumer {
                 .map(new MyMapFunction())
                 .returns(Ship.class);
 
-        Query1.runQuery1(strategy, env, stream);
-        //Query2.runQuery2(strategy, env, stream);
+        //Query1.runQuery1(env, stream);
+        Query2.runQuery2(env, stream);
 
     }
 
@@ -61,11 +64,13 @@ public class MyConsumer {
         // Create the consumer using properties
         FlinkKafkaConsumer<String> myConsumer = new FlinkKafkaConsumer<>(Config.TOPIC1, new SimpleStringSchema(), props);
 
+        System.out.println("--Query2 creato consumer--");
         return myConsumer;
 
     }
 
     public static StreamExecutionEnvironment createEnviroment(FlinkKafkaConsumer<String> consumer){
+        System.out.println("sto in create env QUERY2--");
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
@@ -73,28 +78,5 @@ public class MyConsumer {
         return env;
     }
 
-        
-    public static DataStream<Ship> dataPrep(StreamExecutionEnvironment env, FlinkKafkaConsumer<String> consumer) throws Exception {
 
-        DataStream<Ship> stream = env.addSource(consumer).
-                flatMap(new FlatMapFunction<String, Ship> () {
-
-                    @Override
-                    public void flatMap(String line, Collector<Ship> collector) throws Exception {
-
-                        String[] values = line.split(",");
-
-                        Ship data = new Ship(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[3]), Double.parseDouble(values[4]), values[7]);
-                        //System.out.println("DataEntity: "+data.getShipId()+", "+ data.getShipType()+", "+data.getLon()+", "+data.getLat()+", "+data.getTimestamp()+", "+data.getCell()+", "+data.getTsDate()+", "+data.getSea()+"\n");
-
-                        collector.collect(data);
-
-                    };
-
-                }).name("dataEntity_stream");
-        //stream.print();
-        //env.execute("ingestingData");
-
-        return stream;
-    }
 }
