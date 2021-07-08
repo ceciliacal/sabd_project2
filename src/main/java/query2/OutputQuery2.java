@@ -1,5 +1,6 @@
 package query2;
 
+import org.apache.flink.api.java.tuple.Tuple2;
 import utils.Config;
 
 import java.io.*;
@@ -12,8 +13,16 @@ public class OutputQuery2 {
     private String typeSea;
 
     //key: cella value: num navi
-    private Map<List<String>, Integer> amRank;
-    private Map<List<String>, Integer> pmRank;
+    private List<Tuple2<List<String>, Integer>> amRank;
+    private List<Tuple2<List<String>, Integer>> pmRank;
+
+    public void setAmRank(List<Tuple2<List<String>, Integer>> amRank) {
+        this.amRank = amRank;
+    }
+
+    public void setPmRank(List<Tuple2<List<String>, Integer>> pmRank) {
+        this.pmRank = pmRank;
+    }
 
     public OutputQuery2(Map<String, List<String>> am, Map<String, List<String>> pm) {
 
@@ -24,7 +33,7 @@ public class OutputQuery2 {
     public void calculateAmRank(Map<String, List<String>> am){
 
         Map<Integer, List<String>> swappedKeyValue = new HashMap<>();
-        this.amRank = new HashMap<>();
+        this.amRank = new ArrayList<>();
         int count = 0;
         int max = 2;
 
@@ -59,7 +68,7 @@ public class OutputQuery2 {
                 break;
             }
             else{
-                amRank.put(entry.getValue(), entry.getKey());
+                amRank.add(new Tuple2<>(entry.getValue(), entry.getKey()));
                 count++;
             }
 
@@ -70,7 +79,7 @@ public class OutputQuery2 {
     public void calculatePmRank(Map<String, List<String>> pm){
 
         Map<Integer, List<String>> swappedKeyValue = new HashMap<>();
-        this.pmRank = new HashMap<>();
+        this.pmRank = new ArrayList<>();
 
         int count = 0;
         int max = 2;
@@ -110,7 +119,7 @@ public class OutputQuery2 {
                 break;
             }
             else{
-                pmRank.put(entry.getValue(), entry.getKey());
+                pmRank.add(new Tuple2<>(entry.getValue(), entry.getKey()));
                 count++;
             }
 
@@ -118,11 +127,12 @@ public class OutputQuery2 {
 
     }
 
+
     public static String writeQuery2Result(OutputQuery2 myOutput) throws IOException {
 
         System.out.println("sto in writeQuery2Result: ");
 
-        String outputPath = "results/"+Config.datasetPath+"_"+Config.TIME_MONTH+"_QUERY2.csv";
+        String outputPath = "results/"+Config.datasetPath+"_"+Query2.days+"_QUERY2.csv";
         System.out.println("outputPath: "+outputPath);
         PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 
@@ -137,11 +147,17 @@ public class OutputQuery2 {
         sb.append(",");
         sb.append("00:00-11:59");
         sb.append(",");
-        sb.append(myOutput.getAmRank());
-        sb.append(",");
+        for (int i=0; i<myOutput.amRank.size();i++){
+            sb.append(myOutput.amRank.get(i).f0);
+            sb.append(",");
+        }
+
         sb.append("12:00-23:59");
         sb.append(",");
-        sb.append(myOutput.getPmRank());
+        for (int i=0; i<myOutput.pmRank.size();i++){
+            sb.append(myOutput.pmRank.get(i).f0);
+            sb.append(",");
+        }
         sb.append("\n");
 
         writer.write(sb.toString());
@@ -178,19 +194,4 @@ public class OutputQuery2 {
         this.typeSea = typeSea;
     }
 
-    public Map<List<String>, Integer> getAmRank() {
-        return amRank;
-    }
-
-    public void setAmRank(Map<List<String>, Integer> amRank) {
-        this.amRank = amRank;
-    }
-
-    public Map<List<String>, Integer> getPmRank() {
-        return pmRank;
-    }
-
-    public void setPmRank(Map<List<String>, Integer> pmRank) {
-        this.pmRank = pmRank;
-    }
 }
