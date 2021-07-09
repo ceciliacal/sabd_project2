@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class Query3 {
 
-    public static void runQuery3(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+    public static void runQuery3(DataStream<Ship> stream) throws Exception {
 
         KeyedStream<Ship, String> keyedStream = stream.keyBy(line -> line.getTripId());
 
@@ -173,17 +173,7 @@ public class Query3 {
                         .name("query3Result");
 
 
-        /*
-                .addSink(new FlinkKafkaProducer<String>("QUERY2",
-                        new utils.ProducerStringSerializationSchema("QUERY2"),
-                        MyProducer.getFlinkPropAsProducer(),
-                        FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
-                .name("query2Result");
-         */
-
-
-
-        env.execute("query3");
+        //env.execute("query3");
 
     }
 

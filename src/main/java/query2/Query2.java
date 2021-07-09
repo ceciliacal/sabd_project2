@@ -22,9 +22,7 @@ import java.util.*;
 
 public class Query2 {
 
-    public static final int days= Config.TIME_DAYS_7;
-
-    public static void runQuery2(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+    public static void runQuery2(DataStream<Ship> stream) throws Exception {
 
         System.out.println("--sto in runQuery2--");
 
@@ -56,21 +54,6 @@ public class Query2 {
                         FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
         //.print();
-
-
-        /*
-        .map((MapFunction<OutputQuery2, String>) myOutput -> {
-                    return OutputQuery2.writeQuery2Result(myOutput);
-                })
-                .addSink(new FlinkKafkaProducer<String>("QUERY2",
-                        new utils.ProducerStringSerializationSchema("QUERY2"),
-                        MyProducer.getFlinkPropAsProducer(),
-                        FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
-                .name("query2Result");
-         */
-
-
-        env.execute("query2");
 
     }
 
@@ -110,4 +93,6 @@ public class Query2 {
         }
         return res;
     }
+
+
 }

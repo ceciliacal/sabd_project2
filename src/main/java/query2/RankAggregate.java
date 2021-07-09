@@ -17,7 +17,6 @@ public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2,
         String shipTimestamp = data.getTimestamp();
         String[] tokens = shipTimestamp.split(" ");
         String tripTime = tokens[1];
-        System.out.println("GIORNO DI MERDA: "+tokens[0]);
         String amOrPm = Query2.checkDate(tripTime);
 
         if (amOrPm.equals("am")) {

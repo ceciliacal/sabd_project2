@@ -23,7 +23,6 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
         //ma in un giorno diverso viene ricontata
         String shipId = data.getShipId();
         String tripDay = data.getTripDay();
-        System.out.println("GIORNO DI MERDA: "+tripDay);
         String dailyTrip = shipId+tripDay;
 
         acc.add(data.getShipType(), dailyTrip);

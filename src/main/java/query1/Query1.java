@@ -16,8 +16,7 @@ import utils.Ship;
 
 public class Query1 {
 
-
-    public static void runQuery1(StreamExecutionEnvironment env, DataStream<Ship> stream) throws Exception {
+    public static void runQuery1(DataStream<Ship> stream) throws Exception {
 
         KeyedStream<Ship, String> keyedStream = stream
                 .filter(line -> line.getSea().equals("mediterraneoOccidentale"))
@@ -55,7 +54,7 @@ public class Query1 {
 
 
 
-        env.execute("query1");
+        //env.execute("query1");
 
         System.out.println("----sto in runQuery1");
     }

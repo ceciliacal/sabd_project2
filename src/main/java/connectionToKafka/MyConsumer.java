@@ -33,22 +33,15 @@ public class MyConsumer {
                 .map(new MyMapFunction())
                 .returns(Ship.class);
 
-        /*
-        if (args[0].equals("1")){
-            Query1.runQuery1(env, stream);
-        }
-        if (args[0].equals("2")){
-            Query2.runQuery2(env, stream);
-        }
-        else {
-            Query3.runQuery3(env, stream);
-        }
+        DataStream<Ship> stream1 = stream;
+        DataStream<Ship> stream2 = stream;
+        DataStream<Ship> stream3 = stream;
 
-         */
+        Query1.runQuery1(stream1);
+        Query2.runQuery2(stream2);
+        Query3.runQuery3(stream3);
 
-        //Query1.runQuery1(env, stream);
-        Query2.runQuery2(env, stream);
-        //Query3.runQuery3(env, stream);
+        env.execute("sabd");
 
     }
 
