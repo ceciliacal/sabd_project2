@@ -19,15 +19,16 @@ public class FinalOutputQuery3 {
 
     public FinalOutputQuery3(Map<Double, String> distanceTripId){
 
-        //this.result = new HashMap<>();
         this.result2 = new ArrayList<>();
 
         int count = 0;
         int max = 4;
 
         //key: valore distanza piu alto, value: tripId
-        Map<Double, String> sortedDistances = new TreeMap<>(Collections.reverseOrder());
-        sortedDistances.putAll(distanceTripId);
+        Map<Double, String> sortedDistances = new TreeMap<>(distanceTripId);
+        //sortedDistances.putAll(distanceTripId);
+
+        System.out.println("OUTPUTQUERY3: sortedDistances : "+sortedDistances);
 
         for (Map.Entry<Double, String> entry : distanceTripId.entrySet()){
             if (count>max) {
@@ -72,7 +73,6 @@ public class FinalOutputQuery3 {
         Date timestamp = myOutput.getDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd HH:mm"));
 
-        //List<Tuple2<Double, String>> result2;
         sb.append(simpleDateFormat.format(timestamp));
 
         int count = 0;

@@ -25,7 +25,7 @@ public class Query3 {
                 //todo filter prova ?
                 //.filter(line -> !line.getTripId().contains("parking"))
                 .keyBy(line -> line.getTripId())
-                .window(TumblingEventTimeWindows.of(Time.hours(1), Time.minutes(+15)))
+                .window(TumblingEventTimeWindows.of(Time.hours(1)))
                 .aggregate(new DistanceAggregate(), new ProcessWindowFunction<OutputDistanceQuery3, OutputDistanceQuery3, String, TimeWindow>() {
                     @Override
                     public void process(String key, Context context, Iterable<OutputDistanceQuery3> iterable, Collector<OutputDistanceQuery3> out) throws Exception {
@@ -44,7 +44,7 @@ public class Query3 {
                     }
                 })
                 //faccio merge dei risultati di tutte le key nella time window
-                .windowAll(TumblingEventTimeWindows.of(Time.hours(1), Time.minutes(+15)))
+                .windowAll(TumblingEventTimeWindows.of(Time.hours(1)))
                 .aggregate(new AggregateFunction<OutputDistanceQuery3, FinalAccumulatorQuery3, FinalOutputQuery3>() {
 
                                @Override
@@ -91,13 +91,6 @@ public class Query3 {
                             }
                         })
                 .map((MapFunction<FinalOutputQuery3, String>) myOutput -> FinalOutputQuery3.writeQuery3Result(myOutput))
-
-                /*
-                .map((MapFunction<OutputQuery2, String>) myOutput -> {
-                    return OutputQuery2.writeQuery2Result(myOutput);
-                })
-
-                 */
                 .name("query3Result")
                 .print();
 
