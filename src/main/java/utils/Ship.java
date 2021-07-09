@@ -75,23 +75,22 @@ public class Ship {
 
     public String assignSea(double lat, double lon){
 
-        double latSicilyChannel = 35.586;
+        //double latSicilyChannel = 35.586;
         double lonSicilyChannel = 12.969;
 
         String sea = "";
 
         //orientale
-        if (lat<latSicilyChannel && lon>lonSicilyChannel){
-            sea = "mediterraneoOrientale";
+        if (lon<lonSicilyChannel){
+        //if (lat<latSicilyChannel && lon>lonSicilyChannel){
+            sea = "mediterraneoOccidentale";
 
         }
         else{
-            sea = "mediterraneoOccidentale";
+            sea = "mediterraneoOrientale";
         }
 
         return sea;
-
-
 
     }
     public String assignShipType(int typeNum){

@@ -1,173 +1,87 @@
-2015-03-10,D31,cargo,0.071
-2015-03-10,C20,others,1.3
-2015-03-10,D20,others,0.43
 2015-03-10,D1,others,0.93
-2015-03-10,G34,cargo,0.036
-2015-03-10,G33,cargo,0.071
-2015-03-10,E31,cargo,0.071
-2015-03-10,C31,cargo,0.036
 2015-03-10,C1,others,0.036
-2015-03-10,F31,cargo,0.036
 2015-03-10,D2,others,0.071
-2015-03-10,E30,cargo,0.036
-2015-03-10,D19,others,0.036
-2015-03-10,D30,cargo,0.036
+2015-04-07,D18,passenger transport,0.21,cargo,0.93,others,0.61
+2015-04-07,D4,passenger transport,0.071,cargo,0.64,others,0.93
+2015-04-07,D2,passenger transport,0.036,cargo,0.86,others,1.6
+2015-04-07,C1,cargo,0.071,others,0.61
+2015-04-07,E17,passenger transport,0.18,cargo,1.0,others,0.64
+2015-04-07,E15,passenger transport,0.14,cargo,0.71,others,0.61
+2015-04-07,I10,passenger transport,0.14,cargo,0.50,others,0.14
+2015-04-07,J13,passenger transport,0.14,cargo,0.11,others,0.61
+2015-04-07,C17,others,0.14
+2015-04-07,D11,cargo,0.36
+2015-04-07,G6,passenger transport,0.071,cargo,0.36,others,0.071
+2015-04-07,G7,passenger transport,0.11,cargo,1.3,others,0.71
+2015-04-07,B17,others,0.21
+2015-04-07,H14,cargo,0.14,others,0.14
+2015-04-07,E18,passenger transport,0.071,cargo,0.39,others,0.21
+2015-04-07,I11,passenger transport,0.36,cargo,1.3,others,0.50
+2015-04-07,J15,cargo,0.89,others,0.21
+2015-04-07,H12,passenger transport,0.036,cargo,0.32,others,0.36
+2015-04-07,G8,passenger transport,1.1,cargo,1.3,others,1.1
 2015-04-07,D3,passenger transport,0.036,cargo,0.61,others,0.89
 2015-04-07,D1,passenger transport,0.036,cargo,0.75,others,2.5
 2015-04-07,E6,passenger transport,0.14,cargo,0.57,others,0.93
 2015-04-07,G9,passenger transport,0.36,cargo,0.46,others,0.54
-2015-04-07,E22,cargo,0.61
-2015-04-07,E8,passenger transport,0.036,others,0.18
-2015-04-07,I9,others,0.036
-2015-04-07,F18,cargo,0.11
-2015-04-07,D32,cargo,0.57,others,0.21
-2015-04-07,D2,passenger transport,0.036,cargo,0.86,others,1.6
-2015-04-07,D20,passenger transport,0.18,cargo,1.0,others,3.7
-2015-04-07,F28,cargo,0.036
-2015-04-07,C24,cargo,0.11
 2015-04-07,D17,passenger transport,0.11,cargo,0.64,others,0.57
-2015-04-07,H11,passenger transport,0.18,cargo,0.46,others,0.32
-2015-04-07,D30,cargo,0.43
+2015-04-07,C18,others,0.036
+2015-04-07,D10,cargo,0.036,others,0.071
+2015-04-07,A18,others,0.32
+2015-04-07,G17,cargo,0.57
+2015-04-07,G18,cargo,0.50,others,0.071
 2015-04-07,F7,passenger transport,0.61,cargo,1.2,others,0.68
-2015-04-07,D19,passenger transport,0.14,cargo,1.2,others,1.3
+2015-04-07,G13,cargo,0.071
+2015-04-07,F18,cargo,0.11
+2015-04-07,H10,passenger transport,0.43,cargo,0.96,others,0.36
+2015-04-07,E11,passenger transport,0.11,cargo,0.18,others,0.25
+2015-04-07,F12,passenger transport,0.11,cargo,0.50,others,0.21
+2015-04-07,E16,passenger transport,0.14,cargo,0.93,others,0.68
+2015-04-07,G15,cargo,0.14,others,0.036
+2015-04-07,G16,cargo,0.25,others,0.071
+2015-04-07,A17,others,0.036
+2015-04-07,I14,passenger transport,0.18,cargo,0.57,others,0.36
+2015-04-07,H17,cargo,0.36,others,0.18
+2015-04-07,E12,passenger transport,0.11,cargo,0.32,others,0.29
+2015-04-07,D6,passenger transport,0.036,cargo,0.21,others,0.21
+2015-04-07,H18,cargo,0.071,others,0.071
+2015-04-07,G12,passenger transport,0.036,cargo,0.14,others,0.036
+2015-04-07,F17,cargo,0.14,others,0.071
+2015-04-07,G10,passenger transport,0.21,cargo,0.29,others,0.29
+2015-04-07,I9,others,0.036
 2015-04-07,D5,passenger transport,0.036,cargo,0.50,others,0.64
-2015-04-07,G8,passenger transport,1.1,cargo,1.3,others,1.1
-2015-04-07,G30,cargo,0.39,others,0.14
 2015-04-07,F8,passenger transport,1.3,cargo,0.64,others,1.6
 2015-04-07,F14,passenger transport,0.036,cargo,0.46,others,0.32
-2015-04-07,C18,cargo,0.036,others,0.21
-2015-04-07,E30,cargo,0.75,others,0.25
-2015-04-07,B18,others,0.75
-2015-04-07,D27,cargo,0.86,others,0.071
-2015-04-07,F22,cargo,0.071
-2015-04-07,C20,passenger transport,0.11,cargo,0.57,others,5.8
-2015-04-07,D18,passenger transport,0.21,cargo,1.0,others,0.64
-2015-04-07,J13,passenger transport,0.14,cargo,0.11,others,0.61
-2015-04-07,C22,passenger transport,0.071,cargo,0.18,others,0.11
-2015-04-07,I13,passenger transport,0.39,cargo,0.89,others,0.64
-2015-04-07,G31,cargo,0.46,others,0.18
-2015-04-07,D11,cargo,0.36
-2015-04-07,F23,cargo,0.11
-2015-04-07,D29,cargo,0.25
-2015-04-07,G19,cargo,0.36,others,0.071
-2015-04-07,F17,cargo,0.14,others,0.071
-2015-04-07,C33,cargo,0.14,others,0.036
-2015-04-07,F21,cargo,0.11,others,0.11
-2015-04-07,G18,cargo,0.54,others,0.11
-2015-04-07,G17,cargo,0.57
-2015-04-07,H24,cargo,0.071
-2015-04-07,G23,cargo,0.071
-2015-04-07,G34,cargo,0.36,others,0.32
-2015-04-07,A18,others,0.32
-2015-04-07,D23,cargo,0.64,others,0.11
-2015-04-07,D10,cargo,0.036,others,0.071
-2015-04-07,E7,passenger transport,0.18,cargo,0.071,others,0.46
-2015-04-07,F13,passenger transport,0.036,cargo,0.46,others,0.29
-2015-04-07,G13,cargo,0.071
-2015-04-07,D9,cargo,0.18,others,0.14
-2015-04-07,H8,passenger transport,1.0,cargo,2.0,others,1.0
-2015-04-07,D36,cargo,0.14
-2015-04-07,D7,cargo,0.18,others,0.25
-2015-04-07,F15,cargo,0.61,others,0.25
-2015-04-07,I16,passenger transport,0.036,cargo,1.4,others,0.54
-2015-04-07,C30,cargo,0.11
-2015-04-07,E11,passenger transport,0.11,cargo,0.18,others,0.25
-2015-04-07,H14,cargo,0.14,others,0.14
-2015-04-07,C27,passenger transport,0.036,cargo,0.036
-2015-04-07,G10,passenger transport,0.21,cargo,0.29,others,0.29
-2015-04-07,C36,cargo,0.11
-2015-04-07,C34,cargo,0.18
-2015-04-07,G6,passenger transport,0.071,cargo,0.36,others,0.071
-2015-04-07,D12,cargo,0.25,others,0.036
-2015-04-07,E9,passenger transport,0.036,cargo,0.036,others,0.071
-2015-04-07,D33,cargo,0.18,others,0.036
-2015-04-07,E12,passenger transport,0.11,cargo,0.32,others,0.29
-2015-04-07,G14,others,0.036
-2015-04-07,D35,cargo,0.071
-2015-04-07,C38,cargo,0.11
-2015-04-07,E29,cargo,0.46,others,0.11
-2015-04-07,F27,cargo,0.18
-2015-04-07,C39,cargo,0.18
-2015-04-07,F19,cargo,0.36
-2015-04-07,H19,cargo,0.14
-2015-04-07,D25,cargo,0.54,others,0.11
-2015-04-07,G16,cargo,0.25,others,0.071
-2015-04-07,F29,cargo,0.21,others,0.11
-2015-04-07,E18,passenger transport,0.071,cargo,0.39,others,0.21
-2015-04-07,E15,passenger transport,0.14,cargo,0.71,others,0.61
-2015-04-07,H10,passenger transport,0.43,cargo,0.96,others,0.36
-2015-04-07,E31,cargo,0.50,others,0.14
-2015-04-07,H12,passenger transport,0.036,cargo,0.32,others,0.36
-2015-04-07,F20,cargo,0.61,others,0.18
-2015-04-07,D13,others,0.071
-2015-04-07,E13,passenger transport,0.11,cargo,0.43,others,0.29
-2015-04-07,G32,cargo,0.39,others,0.14
-2015-04-07,C17,others,0.14
-2015-04-07,I14,passenger transport,0.18,cargo,0.57,others,0.36
-2015-04-07,C28,passenger transport,0.036,cargo,0.036
-2015-04-07,F10,passenger transport,0.25,cargo,0.43,others,0.25
-2015-04-07,F16,cargo,0.29,others,0.29
-2015-04-07,H17,cargo,0.36,others,0.18
-2015-04-07,H13,passenger transport,0.036,cargo,0.18,others,0.11
-2015-04-07,D6,passenger transport,0.036,cargo,0.21,others,0.21
-2015-04-07,D40,cargo,0.64
-2015-04-07,C19,cargo,0.18,others,0.54
 2015-04-07,D8,cargo,0.21,others,0.14
-2015-04-07,D37,cargo,0.21
-2015-04-07,D24,cargo,0.79,others,0.071
-2015-04-07,D28,cargo,0.79,others,0.11
-2015-04-07,D21,passenger transport,0.036,cargo,0.71,others,0.50
-2015-04-07,C29,passenger transport,0.071,cargo,0.071
-2015-04-07,J14,passenger transport,0.18,cargo,1.9,others,1.5
-2015-04-07,H9,passenger transport,0.50,cargo,0.96,others,0.43
-2015-04-07,H18,cargo,0.071,others,0.071
-2015-04-07,J15,cargo,0.89,others,0.21
-2015-04-07,C1,cargo,0.071,others,0.61
-2015-04-07,D31,cargo,0.75,others,0.21
-2015-04-07,C32,cargo,0.43,others,0.071
-2015-04-07,C35,cargo,0.14
-2015-04-07,F12,passenger transport,0.11,cargo,0.50,others,0.21
-2015-04-07,E14,passenger transport,0.14,cargo,0.57,others,0.75
-2015-04-07,F6,passenger transport,0.46,cargo,1.4,others,0.71
-2015-04-07,C21,passenger transport,0.071,cargo,0.18,others,0.036
-2015-04-07,G12,passenger transport,0.036,cargo,0.14,others,0.036
-2015-04-07,C37,cargo,0.18
-2015-04-07,C23,passenger transport,0.036,cargo,0.071,others,0.036
-2015-04-07,F31,cargo,0.54,others,0.21
-2015-04-07,C26,cargo,0.11,others,0.036
-2015-04-07,I10,passenger transport,0.14,cargo,0.50,others,0.14
 2015-04-07,E10,passenger transport,0.036,cargo,0.14,others,0.14
-2015-04-07,E5,passenger transport,0.11,cargo,0.43,others,0.96
-2015-04-07,D38,cargo,0.25
-2015-04-07,F9,passenger transport,0.96,cargo,0.57,others,4.3
-2015-04-07,E21,cargo,0.79,others,0.36
-2015-04-07,E24,cargo,0.036
-2015-04-07,F11,passenger transport,0.14,cargo,0.46,others,0.21
-2015-04-07,E25,cargo,0.036
-2015-04-07,G11,passenger transport,0.071,cargo,0.18,others,0.21
-2015-04-07,D39,cargo,0.79
-2015-04-07,E23,cargo,0.39
-2015-04-07,E17,passenger transport,0.18,cargo,1.0,others,0.64
+2015-04-07,E13,passenger transport,0.11,cargo,0.43,others,0.29
 2015-04-07,H15,cargo,0.68,others,0.11
-2015-04-07,H16,cargo,0.68,others,0.14
-2015-04-07,D4,passenger transport,0.071,cargo,0.64,others,0.93
-2015-04-07,E26,cargo,0.036
-2015-04-07,C25,cargo,0.11,others,0.036
-2015-04-07,G24,cargo,0.071
-2015-04-07,D26,cargo,0.82,others,0.071
-2015-04-07,G15,cargo,0.14,others,0.036
-2015-04-07,D22,cargo,0.61,others,0.14
-2015-04-07,I11,passenger transport,0.36,cargo,1.3,others,0.50
-2015-04-07,B17,others,0.21
 2015-04-07,I15,passenger transport,0.071,cargo,1.5,others,0.61
 2015-04-07,I12,passenger transport,0.32,cargo,1.1,others,0.46
-2015-04-07,E19,cargo,0.071
-2015-04-07,E16,passenger transport,0.14,cargo,0.93,others,0.68
-2015-04-07,D34,cargo,0.14
-2015-04-07,G7,passenger transport,0.11,cargo,1.3,others,0.71
-2015-04-07,G33,cargo,1.8,others,1.3
-2015-04-07,E20,cargo,0.46,others,0.57
-2015-04-07,E27,cargo,0.071
-2015-04-07,A17,others,0.036
-2015-04-07,E28,army,0.036,cargo,0.93,others,0.11
-2015-04-07,F30,cargo,0.79,others,0.25
+2015-04-07,D9,cargo,0.18,others,0.14
+2015-04-07,F15,cargo,0.61,others,0.25
+2015-04-07,H16,cargo,0.68,others,0.14
+2015-04-07,F6,passenger transport,0.46,cargo,1.4,others,0.71
+2015-04-07,H9,passenger transport,0.50,cargo,0.96,others,0.43
+2015-04-07,F10,passenger transport,0.25,cargo,0.43,others,0.25
+2015-04-07,E7,passenger transport,0.18,cargo,0.071,others,0.46
+2015-04-07,F16,cargo,0.29,others,0.29
+2015-04-07,J14,passenger transport,0.18,cargo,1.9,others,1.5
+2015-04-07,E9,passenger transport,0.036,cargo,0.036,others,0.071
+2015-04-07,G11,passenger transport,0.071,cargo,0.18,others,0.21
+2015-04-07,D13,others,0.071
+2015-04-07,G14,others,0.036
+2015-04-07,F13,passenger transport,0.036,cargo,0.46,others,0.29
+2015-04-07,D7,cargo,0.18,others,0.25
+2015-04-07,E14,passenger transport,0.14,cargo,0.57,others,0.75
+2015-04-07,E5,passenger transport,0.11,cargo,0.43,others,0.96
+2015-04-07,I13,passenger transport,0.39,cargo,0.89,others,0.64
+2015-04-07,H11,passenger transport,0.18,cargo,0.46,others,0.32
+2015-04-07,F9,passenger transport,0.96,cargo,0.57,others,4.3
+2015-04-07,B18,others,0.75
+2015-04-07,I16,passenger transport,0.036,cargo,1.4,others,0.54
+2015-04-07,F11,passenger transport,0.14,cargo,0.46,others,0.21
+2015-04-07,D12,cargo,0.25,others,0.036
+2015-04-07,H13,passenger transport,0.036,cargo,0.18,others,0.11
+2015-04-07,E8,passenger transport,0.036,others,0.18
+2015-04-07,H8,passenger transport,1.0,cargo,2.0,others,1.0
