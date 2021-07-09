@@ -30,6 +30,7 @@ public class Query3 {
         DataStreamSink<String> oneHour =
                 keyedStream
                 .window(TumblingEventTimeWindows.of(Time.hours(1), Time.minutes(+15)))
+                //calcolo della distanza percorsa da un certo tripId nell'ultima ora
                 .aggregate(new DistanceAggregate(), new ProcessWindowFunction<OutputDistanceQuery3, OutputDistanceQuery3, String, TimeWindow>() {
                     @Override
                     public void process(String key, Context context, Iterable<OutputDistanceQuery3> iterable, Collector<OutputDistanceQuery3> out) throws Exception {

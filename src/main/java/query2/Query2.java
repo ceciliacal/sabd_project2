@@ -59,6 +59,7 @@ public class Query2 {
     }
 
 
+    //controllo se data rientra in am o in pm
     public static String checkDate(String dateTarget){
         String res = "";
         try {

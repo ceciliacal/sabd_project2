@@ -29,8 +29,11 @@ public class MyConsumer {
         consumer.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(1)));
         StreamExecutionEnvironment env = createEnviroment();
 
+        //creo lo stream di tipo "Ship" andando a splittare le righe
+        //che vengono lette dal topic di kafka da parte del consumer con MyMapFunction
         DataStream<Ship> stream = env.addSource(consumer)
                 .map(new MyMapFunction())
+                //filtro tuple che sono comprese nelle celle
                 .filter(line -> line.checkCell());
 
         DataStream<Ship> stream1 = stream;
@@ -46,7 +49,7 @@ public class MyConsumer {
     }
 
     public static FlinkKafkaConsumer<String> createConsumer() throws Exception {
-        // Create properties
+        // creazione properties
         final Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Config.KAFKA_BROKERS);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumerGroup");
@@ -54,7 +57,7 @@ public class MyConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        // Create the consumer using properties
+        // creazione consumer usando le properties
         FlinkKafkaConsumer<String> myConsumer = new FlinkKafkaConsumer<>(Config.TOPIC1, new SimpleStringSchema(), props);
 
         System.out.println("---creato consumer--");

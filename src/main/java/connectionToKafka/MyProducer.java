@@ -41,27 +41,21 @@ public class MyProducer {
 
         final Producer<String, String> producer = createProducer();
 
-        //Putting it in a try catch  block to catch File read exceptions.
         try {
-            //Setting up a Stream to our CSV File.
+            //stream verso file csv
             Stream<String> FileStream = Files.lines(Paths.get("data/"+Config.datasetPath+".csv"));
 
-            //Read each line using Foreach loop on the FileStream object and remove header
+            //rimozione dell'header e lettura del file
             FileStream.skip(1).forEach(line -> {
 
                 Long sleepTime = null;
 
                 System.out.println("------------------------START----------------------");
                 count.getAndIncrement();
-                System.out.println("count = " + count);
 
-
-                //System.out.println("line: " + line);
                 String[] fields = line.split(",");
-                String key = fields[0];
-
                 String[] value = Arrays.copyOfRange(fields, 1, fields.length);
-                String tsCurrent = value[6];
+                String tsCurrent = value[6];    //timestamp linea corrente (in lettura)
 
                 System.out.println("tsCurrent = " + tsCurrent);
                 Long date = null;
@@ -78,7 +72,6 @@ public class MyProducer {
                 //ritardo l'invio delle tuple al broker in base
                 // alla differenza tra i timestamp di due msg consecutivi
                 if (count.get() > 1) {
-
                     try {
                         sleepTime = simulateStream(tsCurrent, csvTimestamps, count.get());
 
@@ -108,17 +101,16 @@ public class MyProducer {
                 //invio record
                 producer.send(CsvRecord, (metadata, exception) -> {
                     if(metadata != null){
-                        //Printing successful writes.
+                        //successful writes
                         System.out.println("CsvData: -> "+ CsvRecord.key()+" | "+ CsvRecord.value());
                     }
                     else{
-                        //Printing unsuccessful writes.
+                        //unsuccessful writes
                         System.out.println("Error Sending Csv Record -> "+ CsvRecord.value());
                     }
                 });
 
                 String tsLast = value[6];
-                System.out.println("tsLast = "+tsLast);
                 System.out.println("------------------------END----------------------");
             });
 
@@ -138,46 +130,31 @@ public class MyProducer {
         System.out.println("-------------STO IN SIMULATE=============");
 
         String lastTs = tsList.get(i-2);
-
-        /*
-        System.out.println("i = "+i);
-        System.out.println("currentTs = "+currentTs);
-        System.out.println("lastTs = "+lastTs);
-
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date date = format.parse(tsLast);
-
-         */
-
         Long lastTsTime = null;
         Long currentTsTime = null;
+
         for (SimpleDateFormat dateFormat: dateFormats) {
             try {
+                //prendo ts del messaggio precedente rispetto a quello che sto leggendo attualmente
                 lastTsTime = dateFormat.parse(lastTs).getTime();
-                /*
-                System.out.println("lastTsTime = "+lastTsTime);
-                System.out.println("---PRIMA---  "+lastTsTime);
-                 */
                 break;
             } catch (ParseException ignored) { }
         }
+
         for (SimpleDateFormat dateFormat: dateFormats) {
             try {
-
                 currentTsTime = dateFormat.parse(currentTs).getTime();
-                /*
-                System.out.println("currentTsTime = "+currentTsTime);
-                System.out.println("---DOPO--- "+currentTsTime);
-                 */
-
                 break;
             } catch (ParseException ignored) { }
         }
 
+        //calcolo differenza in millisecondi fra timestamp corrente e quello precedente
+        //in modo da simulare il ritardo in base al tempo che intercorre fra i due ts
         double diff = currentTsTime - lastTsTime;
         Long sleepTimeMillis =  (long) (diff*Config.accTime);
 
-        //per una differenza di 2 min nei ts, dormo 2 sec
+        //per una differenza di 2 min nei ts, dormo 2 ms
+        //quindi converto differenza di minuti in millisecondi
         Long minutesDifference = TimeUnit.MILLISECONDS.toMinutes(sleepTimeMillis);
 
         System.out.println("--- minutesDifference: "+ minutesDifference);
