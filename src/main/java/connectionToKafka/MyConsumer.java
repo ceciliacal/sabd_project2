@@ -31,7 +31,7 @@ public class MyConsumer {
 
         DataStream<Ship> stream = env.addSource(consumer)
                 .map(new MyMapFunction())
-                .returns(Ship.class);
+                .filter(line -> line.checkCell());
 
         DataStream<Ship> stream1 = stream;
         DataStream<Ship> stream2 = stream;

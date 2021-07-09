@@ -113,6 +113,17 @@ public class Ship {
 
     }
 
+    public boolean checkCell (){
+
+        if (cell.equals("outOfRange")){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
 
     public String calculateCell(double lat, double lon){
 
@@ -168,6 +179,12 @@ public class Ship {
             //System.out.println("-- CELLA= "+cell);
             return cell;
         }
+
+        else{
+            cell = "outOfRange";
+        }
+
+
 
         return cell;
 

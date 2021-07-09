@@ -3,6 +3,9 @@ package query2;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import utils.Ship;
 
+import java.util.List;
+import java.util.Map;
+
 public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2, OutputQuery2> {
     @Override
     public AccumulatorQuery2 createAccumulator() {
@@ -12,7 +15,6 @@ public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2,
     @Override
     public AccumulatorQuery2 add(Ship data, AccumulatorQuery2 acc) {
         //System.out.println("==dataentity: " + data);
-        System.out.println("---add");
 
         String shipTimestamp = data.getTimestamp();
         String[] tokens = shipTimestamp.split(" ");
@@ -39,6 +41,14 @@ public class RankAggregate implements AggregateFunction<Ship, AccumulatorQuery2,
 
     @Override
     public AccumulatorQuery2 merge(AccumulatorQuery2 acc1, AccumulatorQuery2 acc2) {
-        return null;
+
+        for (Map.Entry<String, List<String>> entry : acc2.getAm().entrySet()) {
+            String key = entry.getKey();
+            for (String elem : entry.getValue()){
+                acc1.addAM(key, elem);
+            }
+        }
+
+        return acc1;
     }
 }

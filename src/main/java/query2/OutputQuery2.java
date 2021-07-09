@@ -127,6 +127,46 @@ public class OutputQuery2 {
 
     }
 
+    public static String writeQuery2Result_2(OutputQuery2 myOutput, int days) throws IOException {
+
+        System.out.println("sto in writeQuery2Result: ");
+
+        String outputPath = "results/"+Config.datasetPath+"_"+days+"_QUERY2.csv";
+        System.out.println("outputPath: "+outputPath);
+        PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
+
+        StringBuilder sb = new StringBuilder();
+        Date timestamp = myOutput.getDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(("yyyy-MM-dd"));
+
+        sb.append(simpleDateFormat.format(timestamp));
+        sb.append(",");
+        sb.append(myOutput.getTypeSea());
+
+        sb.append(",");
+        sb.append("00:00-11:59");
+
+        for (int i=0; i<myOutput.amRank.get(0).f0.size();i++){
+            sb.append(",");
+            sb.append(myOutput.amRank.get(0).f0.get(i));
+        }
+
+        sb.append(",");
+        sb.append("12:00-23:59");
+
+        for (int i=0; i<myOutput.pmRank.size();i++){
+            sb.append(",");
+            sb.append(myOutput.pmRank.get(i).f0);
+        }
+        sb.append("\n");
+
+        writer.write(sb.toString());
+        writer.flush();
+        writer.close();
+
+        return sb.toString();
+
+    }
 
     public static String writeQuery2Result(OutputQuery2 myOutput, int days) throws IOException {
 
@@ -146,17 +186,18 @@ public class OutputQuery2 {
 
         sb.append(",");
         sb.append("00:00-11:59");
-        sb.append(",");
+
         for (int i=0; i<myOutput.amRank.size();i++){
-            sb.append(myOutput.amRank.get(i).f0);
             sb.append(",");
+            sb.append(myOutput.amRank.get(i).f0);
         }
 
-        sb.append("12:00-23:59");
         sb.append(",");
+        sb.append("12:00-23:59");
+
         for (int i=0; i<myOutput.pmRank.size();i++){
-            sb.append(myOutput.pmRank.get(i).f0);
             sb.append(",");
+            sb.append(myOutput.pmRank.get(i).f0);
         }
         sb.append("\n");
 

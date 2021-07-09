@@ -1,6 +1,7 @@
 package query1;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
+import query2.AccumulatorQuery2;
 import utils.Ship;
 import java.util.*;
 
@@ -40,13 +41,17 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
 
     @Override
     public AccumulatorQuery1 merge(AccumulatorQuery1 acc1, AccumulatorQuery1 acc2) {
-        //trasferisco elem di un accumulator su un altro
+        //trasferisco elem di un accumulator su un altro sommandoli
         System.out.println("---merge");
-        acc2.getCountShipType().forEach((k, v) -> acc1.getCountShipType().merge(k, v, (v1, v2) -> {
-            Set<String> set = new TreeSet<>(v1);
-            set.addAll(v2);
-            return  new ArrayList<>(set);
-        }));
+        for (Map.Entry<String, List<String>> entry : acc2.getCountShipType().entrySet()) {
+            String key = entry.getKey();
+            for (String elem : entry.getValue()){
+                acc1.add(key, elem);
+            }
+        }
+
         return acc1;
-    }
+        }
+
 }
+

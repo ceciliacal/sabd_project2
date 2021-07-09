@@ -30,7 +30,7 @@ public class FinalOutputQuery3 {
 
         System.out.println("OUTPUTQUERY3: sortedDistances : "+sortedDistances);
 
-        for (Map.Entry<Double, String> entry : distanceTripId.entrySet()){
+        for (Map.Entry<Double, String> entry : sortedDistances.entrySet()){
             if (count>max) {
                 break;
             }
@@ -40,6 +40,7 @@ public class FinalOutputQuery3 {
                 //e scarto quelli precedenti
                 //result.put(entry.getKey(), entry.getValue());
                 result2.add(new Tuple2<>(entry.getKey(), entry.getValue()));
+                System.out.println("--double :"+entry.getKey());
 
                 count++;
             }

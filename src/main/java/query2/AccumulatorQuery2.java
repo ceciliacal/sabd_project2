@@ -18,9 +18,9 @@ public class AccumulatorQuery2 implements Serializable {
     }
 
     public void addAM(String cell, String shipId) {
-        System.out.println("---add AM");
+        //System.out.println("---add AM");
         List<String> listOfShips = am.get(cell);
-        System.out.println("In Accumulator : --listOfShips AM= "+listOfShips);
+        //System.out.println("In Accumulator : --listOfShips AM= "+listOfShips);
         if (listOfShips==null){
             listOfShips = new ArrayList<>();
             listOfShips.add(shipId);
@@ -35,9 +35,9 @@ public class AccumulatorQuery2 implements Serializable {
     }
 
     public void addPM(String cell, String shipId) {
-        System.out.println("---add PM");
+        //System.out.println("---add PM");
         List<String> listOfShips = pm.get(cell);
-        System.out.println("In Accumulator : --listOfShips PM= "+listOfShips);
+        //System.out.println("In Accumulator : --listOfShips PM= "+listOfShips);
         if (listOfShips==null){
             listOfShips = new ArrayList<>();
             listOfShips.add(shipId);

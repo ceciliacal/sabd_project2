@@ -26,7 +26,8 @@ public class Query2 {
 
         System.out.println("--sto in runQuery2--");
 
-        KeyedStream<Ship, String> keyedStream = stream.keyBy(line -> line.getSea());
+        KeyedStream<Ship, String> keyedStream = stream
+                .keyBy(line -> line.getSea());
 
         DataStreamSink<String> oneWeek =
         keyedStream
@@ -81,8 +82,6 @@ public class Query2 {
 
             Date x = calendarTarget.getTime();
             if (x.after(calendar1.getTime()) && x.before(calendar2.getTime())) {
-                System.out.println(true);
-
                 res = "am";
             }
             else{
