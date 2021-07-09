@@ -3,8 +3,8 @@ package utils;
 import java.text.SimpleDateFormat;
 
 public interface Config {
-    //public static String KAFKA_BROKERS = "kafka1:19091";
-    public static String KAFKA_BROKERS = "localhost:9091";
+    public static String KAFKA_BROKERS = "kafka1:19091";
+    //public static String KAFKA_BROKERS = "localhost:9091";
     public static String CLIENT_ID = "myclient";
     //public static String datasetPath = "test";
     //public static String datasetPath = "testQuery3";

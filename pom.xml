@@ -76,7 +76,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>connectionToKafka.MyProducer</mainClass>
+                                <mainClass>connectionToKafka.MyConsumer</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
