@@ -21,11 +21,8 @@ import utils.Config;
 
 
 public class MyProducer {
-    //devo mettere topic e le properties per il kafka client (bootstrap servers)
 
-    //private static final String datasetPath = "data/prj2_dataset.csv";
     private static final SimpleDateFormat[] dateFormats = {new SimpleDateFormat("dd/MM/yy HH:mm"), new SimpleDateFormat("dd-MM-yy HH:mm")};
-
 
     public static Producer<String, String> createProducer() {
         Properties props = new Properties();
@@ -37,13 +34,10 @@ public class MyProducer {
     }
 
 
-
     public static void PublishMessages2() throws IOException {
 
         AtomicInteger count = new AtomicInteger(); //conto a che linea sto
         List<String> csvTimestamps = new ArrayList<>();
-        List<Date> dateList = new ArrayList<>();
-        String reader = "";
 
         final Producer<String, String> producer = createProducer();
 
@@ -53,7 +47,6 @@ public class MyProducer {
             Stream<String> FileStream = Files.lines(Paths.get("data/"+Config.datasetPath+".csv"));
 
             //Read each line using Foreach loop on the FileStream object and remove header
-
             FileStream.skip(1).forEach(line -> {
 
                 Long sleepTime = null;
@@ -75,27 +68,18 @@ public class MyProducer {
                 for (SimpleDateFormat dateFormat: dateFormats) {
                     try {
                         date = dateFormat.parse(tsCurrent).getTime();
-
-                        //System.out.println("---cacca---  "+date);
-
                         break;
                     } catch (ParseException ignored) { }
                 }
 
-
-
                 System.out.println("line: " + line);
 
 
-                //qui dovrei fare un metodo che ritarda l'invio delle tuple al broker in base
+                //ritardo l'invio delle tuple al broker in base
                 // alla differenza tra i timestamp di due msg consecutivi
                 if (count.get() > 1) {
 
                     try {
-                        System.out.println("-- tsCurrent = "+tsCurrent);
-                        //TODO: sistema qua sotto. prende sempre stessa posizione
-                        System.out.println("-- lastTs = "+csvTimestamps.get(count.get()-2));
-                        System.out.println("-- list SIZE = "+csvTimestamps.size());
                         sleepTime = simulateStream(tsCurrent, csvTimestamps, count.get());
 
                     } catch (ParseException e) {
@@ -109,29 +93,19 @@ public class MyProducer {
 
                 if (sleepTime!=null){
                     try {
-                        System.out.println("sleep time: "+sleepTime+" sec");
-                        //TimeUnit.SECONDS.sleep(sleepTime);
-                        TimeUnit.SECONDS.sleep(sleepTime);
+                        System.out.println("sleep time: "+sleepTime+" millisec");
+                        TimeUnit.MILLISECONDS.sleep(sleepTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
-                System.out.println("prima di invio, date: "+date);
                 String dateStrKey = String.valueOf(date);
+
                 //invio dei messaggi
-
-                /*
-                final ProducerRecord<String, String> CsvRecord = new ProducerRecord<>(
-                        Config.TOPIC1, 0, date, date, line
-                );
-
-                 */
-
                 ProducerRecord<String, String> CsvRecord = new ProducerRecord<>( Config.TOPIC1, 0, date, dateStrKey, line);
 
-                // Send a record and set a callback function with metadata passed as argument.
-
+                //invio record
                 producer.send(CsvRecord, (metadata, exception) -> {
                     if(metadata != null){
                         //Printing successful writes.
@@ -152,7 +126,7 @@ public class MyProducer {
             e.printStackTrace();
         }
 
-        System.out.println("lista csvTimeStamps: "+ csvTimestamps.size());
+        //System.out.println("lista csvTimeStamps: "+ csvTimestamps.size());
 
 
     }
@@ -165,10 +139,11 @@ public class MyProducer {
 
         String lastTs = tsList.get(i-2);
 
+        /*
         System.out.println("i = "+i);
         System.out.println("currentTs = "+currentTs);
         System.out.println("lastTs = "+lastTs);
-        /*
+
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = format.parse(tsLast);
 
@@ -201,25 +176,23 @@ public class MyProducer {
 
         double diff = currentTsTime - lastTsTime;
         Long sleepTimeMillis =  (long) (diff*Config.accTime);
+
         //per una differenza di 2 min nei ts, dormo 2 sec
-        Long sleepTimeSec = TimeUnit.MILLISECONDS.toMinutes(sleepTimeMillis);
+        Long minutesDifference = TimeUnit.MILLISECONDS.toMinutes(sleepTimeMillis);
 
-        System.out.println("--- ritardo in MILLISEC: "+ sleepTimeMillis);
-        System.out.println("--- ritardo in SECONDI: "+ sleepTimeSec);
+        System.out.println("--- minutesDifference: "+ minutesDifference);
 
-
-        return sleepTimeSec;
+        return minutesDifference;
 
     }
 
-    //funzione che crea proprietà per creare sink verso kafka
+    //metodo che crea proprietà per creare sink verso kafka
     public static Properties getFlinkPropAsProducer(){
         Properties properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,Config.KAFKA_BROKERS);
         properties.put(ProducerConfig.CLIENT_ID_CONFIG,Config.CLIENT_ID);
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
-
 
         return properties;
 

@@ -128,11 +128,11 @@ public class OutputQuery2 {
     }
 
 
-    public static String writeQuery2Result(OutputQuery2 myOutput) throws IOException {
+    public static String writeQuery2Result(OutputQuery2 myOutput, int days) throws IOException {
 
         System.out.println("sto in writeQuery2Result: ");
 
-        String outputPath = "results/"+Config.datasetPath+"_"+Query2.days+"_QUERY2.csv";
+        String outputPath = "results/"+Config.datasetPath+"_"+days+"_QUERY2.csv";
         System.out.println("outputPath: "+outputPath);
         PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 

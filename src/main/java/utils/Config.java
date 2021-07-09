@@ -9,11 +9,11 @@ public interface Config {
     //public static String datasetPath = "test";
     //public static String datasetPath = "testQuery3";
     //public static String datasetPath = "prj2_dataset";
-    //public static String datasetPath = "datasetPROVA2000";
-    public static String datasetPath = "dataset Prova 8000";
+    public static String datasetPath = "datasetPROVA2000";
+    //public static String datasetPath = "dataset Prova 8000";
     public static String TOPIC1 = "source";
     public static String TOPIC_Q1 = "QUERY1";
-    public static Double accTime = 0.0;
+    public static Double accTime = 1.0;
     public static Integer TIME_DAYS = 2;
     public static Integer TIME_DAYS_7 = 7;
     public static Integer TIME_MONTH = 28;

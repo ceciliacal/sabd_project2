@@ -25,8 +25,8 @@ public class FinalOutputQuery3 {
         int max = 4;
 
         //key: valore distanza piu alto, value: tripId
-        Map<Double, String> sortedDistances = new TreeMap<>(distanceTripId);
-        //sortedDistances.putAll(distanceTripId);
+        Map<Double, String> sortedDistances = new TreeMap<>(Collections.reverseOrder());
+        sortedDistances.putAll(distanceTripId);
 
         System.out.println("OUTPUTQUERY3: sortedDistances : "+sortedDistances);
 
@@ -61,11 +61,11 @@ public class FinalOutputQuery3 {
 
     public void setResult2(List<Tuple2<Double, String>> result2) { this.result2 = result2; }
 
-    public static String writeQuery3Result(FinalOutputQuery3 myOutput) throws IOException {
+    public static String writeQuery3Result(FinalOutputQuery3 myOutput, int numHour) throws IOException {
 
         System.out.println("sto in writeQuery3Result: ");
 
-        String outputPath = "results/"+ Config.datasetPath+"_"+Config.TIME_MONTH+"_QUERY3.csv";
+        String outputPath = "results/"+ Config.datasetPath+"_"+numHour+"h_QUERY3.csv";
         System.out.println("outputPath: "+outputPath);
         PrintWriter writer = new PrintWriter(new FileOutputStream(outputPath, true));
 

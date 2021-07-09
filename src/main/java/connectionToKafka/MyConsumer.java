@@ -2,13 +2,11 @@ package connectionToKafka;
 
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import query1.Query1;
@@ -27,30 +25,30 @@ public class MyConsumer {
 
     public static void main(String[] args) throws Exception {
 
-
         FlinkKafkaConsumer<String> consumer = createConsumer();
-
-        /*
-        WatermarkStrategy<Ship> strategy = WatermarkStrategy.<Ship>forBoundedOutOfOrderness(Duration.ofMinutes(1))
-                                                //.withIdleness(Duration.ofDays(5))
-                                                .withTimestampAssigner((data, ts) -> data.getTsDate().getTime());
-
-         */
-
         consumer.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(1)));
-
-
-
-        StreamExecutionEnvironment env = createEnviroment(consumer);
-
+        StreamExecutionEnvironment env = createEnviroment();
 
         DataStream<Ship> stream = env.addSource(consumer)
                 .map(new MyMapFunction())
                 .returns(Ship.class);
 
+        /*
+        if (args[0].equals("1")){
+            Query1.runQuery1(env, stream);
+        }
+        if (args[0].equals("2")){
+            Query2.runQuery2(env, stream);
+        }
+        else {
+            Query3.runQuery3(env, stream);
+        }
+
+         */
+
         //Query1.runQuery1(env, stream);
-        //Query2.runQuery2(env, stream);
-        Query3.runQuery3(env, stream);
+        Query2.runQuery2(env, stream);
+        //Query3.runQuery3(env, stream);
 
     }
 
@@ -71,7 +69,7 @@ public class MyConsumer {
 
     }
 
-    public static StreamExecutionEnvironment createEnviroment(FlinkKafkaConsumer<String> consumer){
+    public static StreamExecutionEnvironment createEnviroment(){
         System.out.println("--sto in create env--");
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
