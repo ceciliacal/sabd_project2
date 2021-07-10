@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
-import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import utils.Config;
 
@@ -34,7 +33,7 @@ public class MyProducer {
     }
 
 
-    public static void PublishMessages2() throws IOException {
+    public static void PublishMessages() throws IOException {
 
         AtomicInteger count = new AtomicInteger(); //conto a che linea sto
         List<String> csvTimestamps = new ArrayList<>();
@@ -178,7 +177,7 @@ public class MyProducer {
 
     public static void main(String[] args) throws IOException {
 
-        PublishMessages2();
+        PublishMessages();
 
     }
 }
