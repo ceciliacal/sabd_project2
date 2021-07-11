@@ -35,7 +35,7 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
     @Override
     public OutputQuery1 getResult(AccumulatorQuery1 acc) {
         System.out.println("---result");
-        //qui sto restituendo il totale di ogni value, cioè di ogni volta che la finestra ha in teoria processato
+        //restituisco il totale di ogni value, cioè di ogni volta che la finestra ha in teoria processato
         acc.getCountShipType().forEach((k, v) -> System.out.println("k: "+k+" v: "+v));
         return new OutputQuery1(acc.getCountShipType());
     }
