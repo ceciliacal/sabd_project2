@@ -12,15 +12,14 @@ public class AccumulatorQuery1 implements Serializable {
     private Map<String, List<String>> countShipType;
 
     public AccumulatorQuery1() {
-        System.out.println("--sto in costruttore accumulator");
         this.countShipType = new HashMap<>();
     }
 
 
-    public void add(String type, String id){
+    public void addShipPerType(String type, String id){
 
         List<String> listOfShips = countShipType.get(type);
-        System.out.println("In Accumulator: --listOfShips= "+listOfShips);
+        //System.out.println("In Accumulator: --listOfShips= "+listOfShips);
         if (listOfShips == null){
             listOfShips = new ArrayList<>();
             listOfShips.add(id);

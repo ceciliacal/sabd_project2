@@ -1,7 +1,6 @@
 package query1;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import query2.AccumulatorQuery2;
 import utils.Ship;
 import java.util.*;
 
@@ -11,13 +10,15 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
     @Override
     public AccumulatorQuery1 createAccumulator() {
 
+        //istant now
+        //get result faccio diff
         return new AccumulatorQuery1();
     }
 
     @Override
     public AccumulatorQuery1 add(Ship data, AccumulatorQuery1 acc) {
-        System.out.println("==dataentity: "+data);
-        System.out.println("---add");
+        //System.out.println("==dataentity: "+data);
+        //System.out.println("---add");
 
         //creo id univoco per una nave in un determinato giorno
         //concatenando id nave + data giornanliera, così nave viene contata 1 nello stesso giorno su una cella
@@ -26,7 +27,7 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
         String tripDay = data.getTripDay();
         String dailyTrip = shipId+tripDay;
 
-        acc.add(data.getShipType(), dailyTrip);
+        acc.addShipPerType(data.getShipType(), dailyTrip);
 
         return acc;
     }
@@ -46,7 +47,7 @@ public class AverageAggregate implements AggregateFunction<Ship, AccumulatorQuer
         for (Map.Entry<String, List<String>> entry : acc2.getCountShipType().entrySet()) {
             String key = entry.getKey();
             for (String elem : entry.getValue()){
-                acc1.add(key, elem);
+                acc1.addShipPerType(key, elem);
             }
         }
 
